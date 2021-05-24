@@ -12,8 +12,8 @@
           reel.comp.reel :refer $ comp-reel
           respo-md.comp.md :refer $ comp-md
           app.config :refer $ dev?
-          [] app.comp.header :refer $ [] comp-header
-          [] app.comp.home :refer $ [] comp-home
+          app.comp.header :refer $ comp-header
+          app.comp.home :refer $ comp-home
       :defs $ {}
         |comp-container $ quote
           defcomp comp-container (reel)
@@ -127,6 +127,7 @@
           respo.comp.space :refer $ =<
           respo-md.comp.md :refer $ comp-md-block comp-md
           app.resource :refer $ inline
+          "\"cirru-color" :as cirru-color
       :defs $ {}
         |comp-home $ quote
           defcomp comp-home () $ div ({})
@@ -137,7 +138,7 @@
               {} $ :style (merge ui/center ui/row style-suggest)
               div
                 {} $ :style style-description
-                <> "|Respo: a Virtual DOM library in Calcit-js." nil
+                <> "|Respo: a Virtual DOM library in ClojureScript." nil
               =< 8 nil
               a
                 {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
@@ -157,7 +158,10 @@
                     :background-color $ hsl 0 0 95
                     :border-radius "\"8px"
                 comp-md-block "\"Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
-              comp-md-block (inline "\"docs/content.md") ({})
+              comp-md-block (inline "\"docs/content.md")
+                {} $ :highlight
+                  fn (text lang)
+                    if (= lang |cirru) (cirru-color/generate text) text
             =< nil 80
         |style-description $ quote
           def style-description $ {} (:font-size 16) (:font-weight 400)
