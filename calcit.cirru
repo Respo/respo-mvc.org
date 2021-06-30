@@ -802,7 +802,7 @@
                           |r $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1621841892045)
                             :data $ {}
                               |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841892045) (:text |<>)
-                              |r $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841892045) (:text "||Respo: a Virtual DOM library in ClojureScript.")
+                              |r $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1625050932850) (:text "||Respo: a Virtual DOM library based on immutable data.")
                               |v $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841892045) (:text |nil)
                       |v $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1621841892045)
                         :data $ {}
@@ -1141,7 +1141,7 @@
                       |x $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1621841901063)
                         :data $ {}
                           |T $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841901063) (:text |render-link)
-                          |j $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841901063) (:text "||API Docs")
+                          |j $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1625050880171) (:text "||API Docs")
                           |r $ {} (:type :leaf) (:by |rJG4IHzWf) (:at 1621841901063) (:text ||https://github.com/Respo/respo/wiki/API)
                       |y $ {} (:type :expr) (:by |rJG4IHzWf) (:at 1621841901063)
                         :data $ {}

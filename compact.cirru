@@ -138,7 +138,7 @@
               {} $ :style (merge ui/center ui/row style-suggest)
               div
                 {} $ :style style-description
-                <> "|Respo: a Virtual DOM library in ClojureScript." nil
+                <> "|Respo: a Virtual DOM library based on immutable data." nil
               =< 8 nil
               a
                 {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
