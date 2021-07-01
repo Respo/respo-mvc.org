@@ -1,4 +1,4 @@
-Create elements in Calcit syntax:
+Create elements in Calcit indentation syntax:
 
 ```cirru
 div $ {}
@@ -13,7 +13,7 @@ div $ {}
 ; respo.core/div
 ```
 
-Nest child elements:
+Add nested elements:
 
 ```cirru
 div ({})
@@ -35,7 +35,7 @@ div ({})
 
 ### Create Components
 
-To define components, use `defcomp`, which is a Macro:
+To define components, use the macro `defcomp`:
 
 ```cirru
 defcomp comp-demo (p1 p2)
@@ -48,7 +48,7 @@ comp-demo :a :b
 ; respo.core/defcomp
 ```
 
-Use `render!` to mount a component. It also handles re-rendering if mounting already happened.
+Use `render!` to mount a component. It also handles re-rendering if already mounted.
 
 ```cirru
 defatom *store $ {}
@@ -60,7 +60,7 @@ render! mount-target (comp-container @*store) dispatch!
 ; respo.core/render!
 ```
 
-To hot replace app code, use `render!` function. `clear-cache!` for restting internal rendering caches:
+To hot replace app code, use `render!` function. Use `clear-cache!` for resetting potential internal rendering caches:
 
 ```cirru
 defn reload! ()
@@ -72,12 +72,12 @@ defn reload! ()
 
 ### Adding Effects
 
-Define effect with `defeffect` macro. You may also compare arguments with old one to decide what to do:
+Define effects with the macro `defeffect`. You may also detect arguments to decide what to do:
 
 ```cirru
-defeffect effect-focus (a) (action el *local at-place?)
+defeffect effect-focus (a) (action el at-place?)
   when (= :mount action)
-    .focus (.querySelector el "input")
+    .!focus (.!querySelector el |.input)
 ```
 
 Pass component results in a vectors with effects defined:
@@ -91,7 +91,7 @@ defcomp comp-draft (data)
 ```
 
 The effect will be called during with action in `:mount` `:before-update` `:update` and `unmount`.
-Respo would compare `[data]` passed to `effect-focus` with old arguments and updates will be called when they change.
+Respo would call with `:mount` and `:unmount`, also compare the list of arguments `(data)` passed to `effect-focus` with arguments in previous render phase and trigger `:before-update` and `:update` on changes.
 
 ### States Management
 
@@ -99,6 +99,9 @@ Respo uses an Atom to maintain global states. Global states and "Single Source o
 
 ```cirru
 defatom *store $ {}
+  :states $ {}
+    :cursor $ []
+
 defn dispatch! (op op-data)
   swap! *store assoc :a 1
 
@@ -106,29 +109,29 @@ add-watch *store :changes $ fn ()
   render! mount-target (comp-container @*store) dispatch!
 ```
 
-Respo has supports for [component-level states](https://github.com/Respo/respo/wiki/component-states). But states is designed in an awkward syntax in order to make sure it's consistent with "Single Source of Truth". Read about `cursor` and `>>` in the docs.
+Respo has supports for [component-level states](https://github.com/Respo/respo/wiki/component-states). But states is designed in an explicit syntax in order to make sure it obeys "Single Source of Truth". Read about `cursor` and `>>` in the docs.
 
 ### Ecosystem
 
 During developing Respo, a bunch of libraries are added:
 
 * [ui](https://github.com/Respo/respo-ui.calcit) -- basic UI styles collected based on Flexbox
-* [markdown](https://github.com/Respo/respo-markdown.calcit) -- subset Markdown syntax rendering to virtual DOM
-* [message](https://github.com/Respo/respo-message.calcit) -- displaying message on top-right corner
-* [feather](https://github.com/Respo/respo-feather.calcit) -- icons library of feather
-* [alerts](https://github.com/Respo/alerts.calcit) -- replacing alert/confirm/prompt components
-* [router](https://github.com/Respo/respo-router.calcit) -- HTML5 router library decoupled from view part
-* [reel](https://github.com/Respo/reel.calcit) -- time travelling developing tool
-* [value](https://github.com/Respo/respo-value.calcit) -- to display collections
+* [markdown](https://github.com/Respo/respo-markdown.calcit) -- render Markdown subset to virtual DOM
+* [message](https://github.com/Respo/respo-message.calcit) -- display messages on top-right corner
+* [feather](https://github.com/Respo/respo-feather.calcit) -- icons library based on feather
+* [alerts](https://github.com/Respo/alerts.calcit) -- replacing browser native alert/confirm/prompt UIs
+* [router](https://github.com/Respo/respo-router.calcit) -- router library decoupled from view layer
+* [reel](https://github.com/Respo/reel.calcit) -- time travel debugging tool
+* [value](https://github.com/Respo/respo-value.calcit) -- to display values from Calcit
 
 ### Try Respo
 
-Now it's your turn to read Guide and try Respo:
+Read guides and try Respo:
 
 * [Read guides](https://github.com/Respo/respo.cljs/wiki)
 * [Browse examples](https://github.com/Respo/respo-examples.cljs/)
 * [Try minimal Respo app by your own](https://github.com/Respo/minimal-respo.cljs)
 
-For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/mvc-works/calcit-workflow/blob/master/src/app/main.cljs). [Contact me on Twitter](https://twitter.com/jiyinyiyong) anytime if you got questions.
+For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/master/compact.cirru#L16).
 
-[Send feedbacks on issues](https://github.com/Respo/cljs.respo-mvc.org/issues/1) if you want to improve this page. [Old versions](https://gist.github.com/jiyinyiyong/008a2be624a351a11d1ca44f809963a3).
+[Find me on Twitter](https://twitter.com/jiyinyiyong). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page.
