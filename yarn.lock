@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@calcit/procs@^0.4.3":
-  version "0.4.3"
-  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.4.3.tgz#06e230815b1eb281db7f15f184ab23cb4076335f"
-  integrity sha512-G76YVNOuGqmoCTJh7pQ1Bu4H9RsVZ4OE12aW8Bm/LBZlvtKW5/sy3P/jIZs8POFwSGZkflDHX1FsZerlYbO/Dw==
+"@calcit/procs@^0.4.25":
+  version "0.4.25"
+  resolved "https://registry.npmjs.org/@calcit/procs/-/procs-0.4.25.tgz#4c48a196f6f21bc3d87aa436f1bd5bada6442c2e"
+  integrity sha512-RXGy8LTQA3felPmVzoyGEdDReg58uYCopGziR94bcpIGRACIAenSK3jfJl2yMWg762BkaW4tVnoEZZYP9jk4yA==
   dependencies:
     "@calcit/ternary-tree" "0.0.16"
     "@cirru/parser.ts" "^0.0.3"
@@ -26,20 +26,20 @@
   resolved "https://registry.npmjs.org/@cirru/writer.ts/-/writer.ts-0.1.3.tgz#5f54bdecaa20ba3dab16cbe6da711854138a9c0a"
   integrity sha512-vJnhmhm7we5UfQIwmZfQpF3bAFbVybzT6LbmkbQHxgijaQg3gPfNVsnSIa3g3KpmWVtvkzEx+nUy5aMwsJiV1A==
 
-cirru-color@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.npmjs.org/cirru-color/-/cirru-color-0.2.0.tgz#ef2633130254bb6f848294fada631b18d72d067a"
-  integrity sha1-7yYzEwJUu2+EgpT62mMbGNctBno=
+cirru-color@^0.2.1-a1:
+  version "0.2.1-a1"
+  resolved "https://registry.npmjs.org/cirru-color/-/cirru-color-0.2.1-a1.tgz#b85224a82db8b2a4ad3d83bbd267d0df5bb31242"
+  integrity sha512-n5wuLd4oXm75sv7jPJlfVW18Ug2+L84V4f6NuAlA/049QW98NRSMAtQxXOC3PQQvFzCqDSV3itpuBua05OXYfg==
 
 colorette@^1.2.2:
-  version "1.2.2"
-  resolved "https://registry.npmjs.org/colorette/-/colorette-1.2.2.tgz#cbcc79d5e99caea2dbf10eb3a26fd8b3e6acfa94"
-  integrity sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==
+  version "1.3.0"
+  resolved "https://registry.npmjs.org/colorette/-/colorette-1.3.0.tgz#ff45d2f0edb244069d3b772adeb04fed38d0a0af"
+  integrity sha512-ecORCqbSFP7Wm8Y6lyqMJjexBQqXSF7SSeaTyGGphogUjBlFP9m9o08wy86HL2uB7fMTxtOUzLMk7ogKcxMg1w==
 
-esbuild@^0.12.8:
-  version "0.12.12"
-  resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.12.12.tgz#2c3815c508e20f771cf6b2ffb03aa7349e651657"
-  integrity sha512-fdB/8HRg9u95Zi4/qV+osrfzpvLzubFKUr8SkZf/kUKImLiX61Y7qBzV14FCKphFk7YoXWY85nbPGkI6pq+Zeg==
+esbuild@^0.12.17:
+  version "0.12.24"
+  resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.12.24.tgz#21966fad25a80f368ed308101e88102bce0dc68f"
+  integrity sha512-C0ibY+HsXzYB6L/pLWEiWjMpghKsIc58Q5yumARwBQsHl9DXPakW+5NI/Y9w4YXiz0PEP6XTGTT/OV4Nnsmb4A==
 
 fsevents@~2.3.2:
   version "2.3.2"
@@ -59,26 +59,26 @@ has@^1.0.3:
     function-bind "^1.1.1"
 
 is-core-module@^2.2.0:
-  version "2.4.0"
-  resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.4.0.tgz#8e9fc8e15027b011418026e98f0e6f4d86305cc1"
-  integrity sha512-6A2fkfq1rfeQZjxrZJGerpLCTHRNEBiSgnu0+obeJpEPZRUooHgsizvzv0ZjJwOz3iWIHdJtVWJ/tmPr3D21/A==
+  version "2.6.0"
+  resolved "https://registry.npmjs.org/is-core-module/-/is-core-module-2.6.0.tgz#d7553b2526fe59b92ba3e40c8df757ec8a709e19"
+  integrity sha512-wShG8vs60jKfPWpF2KZRaAtvt3a20OAn7+IJ6hLPECpSABLcKtFKTTI4ZtH5QcBruBHlq+WsdHWyz0BCZW7svQ==
   dependencies:
     has "^1.0.3"
 
 nanoid@^3.1.23:
-  version "3.1.23"
-  resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz#f744086ce7c2bc47ee0a8472574d5c78e4183a81"
-  integrity sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw==
+  version "3.1.25"
+  resolved "https://registry.npmjs.org/nanoid/-/nanoid-3.1.25.tgz#09ca32747c0e543f0e1814b7d3793477f9c8e152"
+  integrity sha512-rdwtIXaXCLFAQbnfqDRnI6jaRHp9fTcYBjtFKE8eezcZ7LuLjhUaQGNeMXf1HmRoCH32CLz6XwX0TtxEOS/A3Q==
 
 path-parse@^1.0.6:
   version "1.0.7"
   resolved "https://registry.npmjs.org/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
-postcss@^8.3.4:
-  version "8.3.5"
-  resolved "https://registry.npmjs.org/postcss/-/postcss-8.3.5.tgz#982216b113412bc20a86289e91eb994952a5b709"
-  integrity sha512-NxTuJocUhYGsMiMFHDUkmjSKT3EdH4/WbGF6GCi1NDGk+vbcUTun4fpbOqaPtD8IIsztA2ilZm2DhYCuyN58gA==
+postcss@^8.3.6:
+  version "8.3.6"
+  resolved "https://registry.npmjs.org/postcss/-/postcss-8.3.6.tgz#2730dd76a97969f37f53b9a6096197be311cc4ea"
+  integrity sha512-wG1cc/JhRgdqB6WHEuyLTedf3KIRuD0hG6ldkFEZNCjRxiC+3i6kkWUUbiJQayP28iwG35cEmAbe98585BYV0A==
   dependencies:
     colorette "^1.2.2"
     nanoid "^3.1.23"
@@ -93,9 +93,9 @@ resolve@^1.20.0:
     path-parse "^1.0.6"
 
 rollup@^2.38.5:
-  version "2.52.4"
-  resolved "https://registry.npmjs.org/rollup/-/rollup-2.52.4.tgz#0150247d54fb2f21be4915b898f8764389fea292"
-  integrity sha512-AXgUxxWXyGfsj8GKleR1k8KsG8G+7ZZDRU9RZb9PnLGSyTqI/1qf/+QSp1hRaR40j4yfBCKXs5khtGKiFwihfg==
+  version "2.56.3"
+  resolved "https://registry.npmjs.org/rollup/-/rollup-2.56.3.tgz#b63edadd9851b0d618a6d0e6af8201955a77aeff"
+  integrity sha512-Au92NuznFklgQCUcV96iXlxUbHuB1vQMaH76DHl5M11TotjOHwqk9CwcrT78+Tnv4FN9uTBxq6p4EJoYkpyekg==
   optionalDependencies:
     fsevents "~2.3.2"
 
@@ -104,13 +104,13 @@ source-map-js@^0.6.2:
   resolved "https://registry.npmjs.org/source-map-js/-/source-map-js-0.6.2.tgz#0bb5de631b41cfbda6cfba8bd05a80efdfd2385e"
   integrity sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug==
 
-vite@^2.3.8:
-  version "2.3.8"
-  resolved "https://registry.npmjs.org/vite/-/vite-2.3.8.tgz#42e3e03953859fd410e4e6ab3d1cca0aab2adc3c"
-  integrity sha512-QiEx+iqNnJntSgSF2fWRQvRey9pORIrtNJzNyBJXwc+BdzWs83FQolX84cTBo393cfhObrtWa6180dAa4NLDiQ==
+vite@^2.5.2:
+  version "2.5.2"
+  resolved "https://registry.npmjs.org/vite/-/vite-2.5.2.tgz#3963a4ec1e6ecae49359eddfdd67f6cb1e6e07a1"
+  integrity sha512-JK5uhiVyMqHiAJbgBa8rCvpP8bEhAE9dKDv1gCmP+EUP2FSPmEeW3WXlCXauPB3MDa8behPW+ntyNXqnGaxslg==
   dependencies:
-    esbuild "^0.12.8"
-    postcss "^8.3.4"
+    esbuild "^0.12.17"
+    postcss "^8.3.6"
     resolve "^1.20.0"
     rollup "^2.38.5"
   optionalDependencies:
