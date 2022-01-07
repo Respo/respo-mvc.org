@@ -128,7 +128,7 @@ During developing Respo, a bunch of libraries are added:
 
 Read guides and try Respo:
 
-* [Read guides](https://github.com/Respo/respo.cljs/wiki)
+* [Read guides](https://github.com/Respo/respo.calcit/wiki)
 * [Browse examples](https://github.com/Respo/respo-examples.cljs/)
 * [Try minimal Respo app by your own](https://github.com/Respo/minimal-respo.cljs)
 

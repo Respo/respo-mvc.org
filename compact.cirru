@@ -3,6 +3,7 @@
   :configs $ {} (:init-fn |app.main/main!) (:reload-fn |app.main/reload!)
     :modules $ [] |respo.calcit/compact.cirru |lilac/compact.cirru |memof/compact.cirru |respo-ui.calcit/compact.cirru |respo-markdown.calcit/compact.cirru |reel.calcit/compact.cirru
     :version |0.0.1
+  :entries $ {}
   :files $ {}
     |app.comp.home $ {}
       :ns $ quote
@@ -81,7 +82,7 @@
         |comp-header $ quote
           defcomp comp-header () $ div
             {} $ :style style-header
-            div ({}) (render-link |Respo |/) (render-link |Guide |https://github.com/Respo/respo/wiki) (render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API) (render-link |Community |https://github.com/Respo/respo/wiki/Community)
+            div ({}) (render-link |Respo |/) (render-link |Guide |https://github.com/Respo/respo.calcit/wiki) (render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API) (render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community)
             div ({})
               a $ {} (:href |https://github.com/Respo) (:inner-text |GitHub) (:target |_blanck) (:style style-github)
         |style-github $ quote
