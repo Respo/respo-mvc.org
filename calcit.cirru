@@ -834,7 +834,7 @@
                         :data $ {}
                           |T $ {} (:text |render-link) (:type :leaf) (:at 1621841901063) (:by |rJG4IHzWf)
                           |j $ {} (:text ||Guide) (:type :leaf) (:at 1621841901063) (:by |rJG4IHzWf)
-                          |r $ {} (:text ||https://github.com/Respo/respo.calcit/wiki) (:type :leaf) (:at 1641535236055) (:by |rJG4IHzWf)
+                          |r $ {} (:text ||http://guide.respo-mvc.org/) (:type :leaf) (:at 1643984127184) (:by |rJG4IHzWf)
                         :type :expr
                         :at 1621841901063
                         :by |rJG4IHzWf

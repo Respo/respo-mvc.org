@@ -134,4 +134,4 @@ Read guides and try Respo:
 
 For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/master/compact.cirru#L16).
 
-[Find me on Twitter](https://twitter.com/jiyinyiyong). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page.
+[Find me on Twitter](https://twitter.com/tiyecirru). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page.
