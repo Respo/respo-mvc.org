@@ -33,6 +33,18 @@ div ({})
 ; respo.core/<>
 ```
 
+CSS in Calcit:
+
+```cirru
+defstyle css-hover $ {}
+  "|$0" $ {}
+    :color |#fff
+  "|$0:hover" $ {}
+    :color |#eee
+
+; respo.css/defstyle
+```
+
 ### Create Components
 
 To define components, use the macro `defcomp`:
@@ -132,6 +144,6 @@ Read guides and try Respo:
 * [Browse examples](https://github.com/Respo/respo-examples.cljs/)
 * [Try minimal Respo app by your own](https://github.com/Respo/minimal-respo.cljs)
 
-For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/master/compact.cirru#L16).
+For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/main/compact.cirru#L10).
 
 [Find me on Twitter](https://twitter.com/tiyecirru). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page.
