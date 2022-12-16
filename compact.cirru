@@ -15,11 +15,11 @@
                 state $ either (:data states)
                   {} $ :content "\""
               div
-                {} $ :style (merge ui/global)
+                {} $ :class-name css/global
                 comp-header
                 comp-home
       :ns $ quote
-        ns app.comp.container $ :require (respo-ui.core :as ui)
+        ns app.comp.container $ :require (respo-ui.core :as ui) (respo-ui.css :as css)
           respo.core :refer $ defcomp defeffect <> >> div button textarea span input
           respo.comp.space :refer $ =<
           reel.comp.reel :refer $ comp-reel
@@ -31,10 +31,10 @@
       :defs $ {}
         |comp-header $ quote
           defcomp comp-header () $ div
-            {} $ :style style-header
+            {} (:class-name css/row-parted) (:style style-header)
             div ({}) (render-link |Respo |/) (render-link |Guide |http://guide.respo-mvc.org/) (render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API) (render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community)
             div ({})
-              a $ {} (:href |https://github.com/Respo) (:inner-text |GitHub) (:target |_blanck) (:style style-github)
+              a $ {} (:href |https://github.com/Respo) (:inner-text |GitHub) (:target |_blanck) (:class-name css/link) (:style style-github)
         |render-link $ quote
           defn render-link (text path)
             div
@@ -42,21 +42,22 @@
               a $ {} (:inner-text text)
                 :href $ str path
                 :style style-link
+                :class-name css/link
         |style-github $ quote
           def style-github $ {} (:text-decoration :none)
         |style-header $ quote
-          def style-header $ merge ui/row
-            {} (:justify-content :space-between) (:align-items :center) (:padding "|0 32px")
-              :border-bottom $ str "|1px solid " (hsl 0 0 94)
-              :line-height |40px
-              :font-family "|Josefin Sans"
+          def style-header $ {} (:align-items :center) (:padding "|0 32px")
+            :border-bottom $ str "|1px solid " (hsl 0 0 94)
+            :line-height |40px
+            :font-family ui/font-fancy
         |style-link $ quote
           def style-link $ {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
         |style-section $ quote
-          def style-section $ {} (:display :inline-block) (:margin-right 64)
+          def style-section $ {} (:display :inline-block) (:margin-right 24)
       :ns $ quote
         ns app.comp.header $ :require
           respo.util.format :refer $ hsl
+          respo-ui.css :as css
           respo-ui.core :as ui
           respo.core :refer $ defcomp div span a
           respo.comp.space :refer $ =<
@@ -65,23 +66,21 @@
         |comp-home $ quote
           defcomp comp-home () $ div ({})
             div
-              {} $ :style (merge ui/column ui/center style-header)
+              {}
+                :class-name $ str-spaced css/center
+                :style style-header
               div $ {} (:style style-logo)
             div
-              {} $ :style (merge ui/center ui/row style-suggest)
+              {} (:class-name css/row-center) (:style style-suggest)
               div
                 {} $ :style style-description
                 <> "|Respo: a Virtual DOM library based on immutable data." nil
-              =< 8 nil
-              a
-                {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
-                button $ {} (:inner-text "|Read Examples")
-                  :style $ merge ui/button
-              =< 8 nil
               a
                 {} (:href |https://github.com/Respo/respo/wiki/Beginner-Guide) (:target |_blank)
-                button $ {} (:inner-text "|Beginner Guide")
-                  :style $ merge ui/button
+                button $ {} (:inner-text "|Beginner Guide") (:class-name css/button-primary)
+              a
+                {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
+                button $ {} (:inner-text "|Read Examples") (:class-name css/button)
             div
               {} $ :style
                 {} (:width 800) (:margin :auto) (:font-size 16)
@@ -109,11 +108,12 @@
             :display :inline-block
             :vertical-align :middle
         |style-suggest $ quote
-          def style-suggest $ {} (:padding-top 48) (:padding-bottom 48)
+          def style-suggest $ {} (:padding-top 48) (:padding-bottom 48) (:gap 8)
       :ns $ quote
         ns app.comp.home $ :require
           respo.util.format :refer $ hsl
           respo-ui.core :as ui
+          respo-ui.css :as css
           respo.core :refer $ defcomp <> span div button a img pre code
           respo.comp.space :refer $ =<
           respo-md.comp.md :refer $ comp-md-block comp-md
