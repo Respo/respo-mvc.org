@@ -102,7 +102,7 @@ defcomp comp-draft (data)
       input $ {}
 ```
 
-The effect will be called during with action in `:mount` `:before-update` `:update` and `unmount`.
+The effect will be called during with action in `:mount` `:before-update` `:update` and `:unmount`.
 Respo would call with `:mount` and `:unmount`, also compare the list of arguments `(data)` passed to `effect-focus` with arguments in previous render phase and trigger `:before-update` and `:update` on changes.
 
 ### States Management
@@ -125,13 +125,13 @@ Respo has supports for [component-level states](https://github.com/Respo/respo/w
 
 ### Ecosystem
 
-During developing Respo, a bunch of libraries are added:
+During developing Respo, several libraries are added:
 
 * [ui](https://github.com/Respo/respo-ui.calcit) -- basic UI styles collected based on Flexbox
-* [markdown](https://github.com/Respo/respo-markdown.calcit) -- render Markdown subset to virtual DOM
-* [message](https://github.com/Respo/respo-message.calcit) -- display messages on top-right corner
 * [feather](https://github.com/Respo/respo-feather.calcit) -- icons library based on feather
 * [alerts](https://github.com/Respo/alerts.calcit) -- replacing browser native alert/confirm/prompt UIs
+* [markdown](https://github.com/Respo/respo-markdown.calcit) -- render Markdown subset to virtual DOM
+* [message](https://github.com/Respo/respo-message.calcit) -- display messages on top-right corner
 * [router](https://github.com/Respo/respo-router.calcit) -- router library decoupled from view layer
 * [reel](https://github.com/Respo/reel.calcit) -- time travel debugging tool
 * [value](https://github.com/Respo/respo-value.calcit) -- to display values from Calcit
@@ -141,8 +141,9 @@ During developing Respo, a bunch of libraries are added:
 Read guides and try Respo:
 
 * [Read guides](https://github.com/Respo/respo.calcit/wiki)
-* [Browse examples](https://github.com/Respo/respo-examples.cljs/)
-* [Try minimal Respo app by your own](https://github.com/Respo/minimal-respo.cljs)
+* [My Respo Calcit Workflow](https://github.com/calcit-lang/respo-calcit-workflow)
+* [Browse cljs examples](https://github.com/Respo/respo-examples.cljs/)
+* [Try minimal Respo.cljs app by your own](https://github.com/Respo/minimal-respo.cljs)
 
 For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/main/compact.cirru#L10).
 

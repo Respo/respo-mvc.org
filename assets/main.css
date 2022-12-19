@@ -1,0 +1,113 @@
+
+body {
+  margin: 0;
+  overscroll-behavior-y: none;
+}
+
+body * {
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: hsla(0,0%,100%);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsla(200,100%,76%,0.8);
+}
+
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+::-webkit-resizer {
+  background-color:transparent;
+}
+
+
+.md-block {
+  flex: 1;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.md-block h2 {
+  font-size: 20px;
+}
+
+
+.md-block h3 {
+  font-size: 18px;
+}
+
+.md-block p > code {
+  padding: 0 8px;
+  margin: 0 4px;
+  font-size: 12px;
+  background-color: hsl(0,0%,94%);
+  white-space: nowrap;
+  display: inline-block;
+  line-height: 1.8;
+  font-family: Source Code Pro, menlo, Ubuntu mono, monospace;
+}
+
+.md-block a code {
+  pointer-events: none;
+  font-family: Source Code Pro, menlo, Ubuntu mono, monospace;
+}
+
+.md-code-block {
+  vertical-align: top;
+  margin: 0;
+  padding: 8px;
+  margin: 8px 0;
+  line-height: 1.5;
+  background-color: hsl(0,0%,100%);
+  border: 1px solid hsl(0,0%,90%);
+  border-radius: 4px;
+  display: block;
+  font-size: 13px;
+}
+
+.md-code-block code {
+  font-family: Source Code Pro, menlo, Ubuntu mono, monospace;
+}
+
+.md-p code {
+  font-family: Source Code Pro, menlo, Ubuntu mono, monospace;
+  font-size: 12px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 0 6px;
+  line-height: 21px;
+  display: inline-block;
+}
+
+.cirru-color .whitespace {}
+.cirru-color .func {
+    color: #66b;
+}
+.cirru-color .string {
+    color: hsl(60, 45%, 55%);
+}
+.cirru-color .para {
+    color: gray;
+}
+.cirru-color .punc {
+    color: hsl(132, 18%, 74%);
+}
+.cirru-color .string-text {
+    color: hsl(60, 41%, 51%);
+}
+.cirru-color .escape {
+    color: hsl(0, 87%, 69%);
+}
+.cirru-color .escape-text {
+    color: red;
+}
