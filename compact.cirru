@@ -76,7 +76,7 @@
                 {} $ :style style-description
                 <> "|Respo: a Virtual DOM library based on immutable data." nil
               a
-                {} (:href |https://github.com/Respo/respo/wiki/Beginner-Guide) (:target |_blank)
+                {} (:href |http://guide.respo-mvc.org/) (:target |_blank)
                 button $ {} (:inner-text "|Beginner Guide") (:class-name css/button-primary)
               a
                 {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)

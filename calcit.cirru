@@ -481,7 +481,7 @@
                               |b $ {} (:at 1671200260077) (:by |rJG4IHzWf) (:type :expr)
                                 :data $ {}
                                   |T $ {} (:at 1671200260077) (:by |rJG4IHzWf) (:text |:href) (:type :leaf)
-                                  |b $ {} (:at 1671200260077) (:by |rJG4IHzWf) (:text ||https://github.com/Respo/respo/wiki/Beginner-Guide) (:type :leaf)
+                                  |b $ {} (:at 1672763668937) (:by |rJG4IHzWf) (:text ||http://guide.respo-mvc.org/) (:type :leaf)
                               |h $ {} (:at 1671200260077) (:by |rJG4IHzWf) (:type :expr)
                                 :data $ {}
                                   |T $ {} (:at 1671200260077) (:by |rJG4IHzWf) (:text |:target) (:type :leaf)
