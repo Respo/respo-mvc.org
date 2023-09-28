@@ -15,52 +15,138 @@
                   cursor $ either (:cursor states) ([])
                   state $ either (:data states)
                     {} $ :content "\""
+                  content-data $ parse-cirru-edn (include-file! "\"./docs/content.cirru")
                 div
                   {} $ :class-name css/global
-                  =< nil 8
+                  =< nil 20
                   comp-visual
-                  =< nil 8
-                  comp-home
+                  =< nil 40
+                  div
+                    {} $ :style
+                      {} (:max-width 960) (:margin :auto) (:font-size 16) (:padding "\"0 40px")
+                    list-> ({})
+                      -> content-data $ map-indexed
+                        fn (idx item)
+                          [] idx $ render-item item
+                  =< nil 80
                   comp-footer
         |comp-footer $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defcomp comp-footer () $ div ({}) (render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community)
-      :ns $ %{} :CodeEntry (:doc |)
-        :code $ quote
-          ns app.comp.container $ :require (respo-ui.core :as ui) (respo-ui.css :as css)
-            respo.core :refer $ defcomp defeffect <> >> div button textarea span input
-            respo.comp.space :refer $ =<
-            reel.comp.reel :refer $ comp-reel
-            respo-md.comp.md :refer $ comp-md
-            app.config :refer $ dev?
-            app.comp.home :refer $ comp-home comp-visual render-link
-    |app.comp.home $ %{} :FileEntry
-      :defs $ {}
-        |comp-home $ %{} :CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-home () $ div ({})
+            defcomp comp-footer () $ div
+              {} $ :class-name style-footer
               div
                 {} $ :style
-                  {} (:width 800) (:margin :auto) (:font-size 16)
-                div
-                  {} $ :style
+                  {}
+                    :background-color $ hsl 0 0 95
+                    :border-radius "\"8px"
+                comp-md-block "\"Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
+              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community
+        |hacky-wrap-code $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn hacky-wrap-code (code)
+              let
+                  v $ .-value code
+                set! (.-value code) (js-array v)
+                , code
+        |include-file! $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defmacro include-file! (path) (read-file path)
+        |render-item $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defn render-item (item)
+              tag-match item
+                  :text t
+                  div
+                    {} $ :style
+                      {} $ :line-height 1.4
+                    comp-md t
+                (:title t)
+                  div
+                    {} $ :class-name style-title
+                    <> t
+                (:pair l r)
+                  div
                     {}
-                      :background-color $ hsl 0 0 95
-                      :border-radius "\"8px"
-                  comp-md-block "\"Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
-                comp-md-block (inline "\"docs/content.md")
-                  {} $ :highlight
-                    fn (text lang)
-                      if (= lang |cirru) (cirru-color/generate text) text
-              =< nil 80
+                      :class-name $ str-spaced css/row css/gap8
+                      :style $ {} (:flex-wrap :wrap) (:margin-bottom 20)
+                    div
+                      {} (:class-name css/flex)
+                        :style $ {} (:min-width 320)
+                      render-item l
+                    div
+                      {} (:class-name css/flex)
+                        :style $ {} (:min-width 320)
+                      render-item r
+                (:cards xs)
+                  list->
+                    {} $ :style
+                      {} (:display :grid) (:gap "\"8px") (:grid-template-columns "\"repeat(auto-fit, minmax(300px, 1fr))") (:margin "\"8px 0 16px")
+                    -> xs $ map-indexed
+                      fn (idx x)
+                        [] idx $ render-item x
+                (:list xs)
+                  list-> ({})
+                    -> xs $ map-indexed
+                      fn (idx x)
+                        [] idx $ render-item x
+                (:snippet code)
+                  comp-cirru-snippet
+                    .trim $ format-cirru (hacky-wrap-code code)
+                    {} (:margin-bottom 4) (:overflow :auto)
+                (:tiny-snippet code)
+                  comp-cirru-snippet
+                    .trim $ format-cirru (hacky-wrap-code code)
+                    {} $ :border :none
+                (:link name url desc)
+                  div
+                    {} $ :class-name style-link-card
+                    div ({})
+                      div ({})
+                        a $ {} (:class-name css/link) (:href url) (:inner-text name) (:target "\"_blank")
+                      if (some? desc) (<> desc style-desc)
+                _ $ div ({})
+                  <> $ str (nth item 0)
+        |style-desc $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-desc $ {}
+              "\"&" $ {}
+                :color $ hsl 0 0 40
+        |style-footer $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-footer $ {}
+              "\"&" $ {} (:max-width 960) (:margin :auto) (:font-size 16) (:padding "\"0 40px") (:padding "\"0 20px 24px")
+        |style-link-card $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-link-card $ {}
+              "\"&" $ {} (:border-radius "\"8px") (:padding "\"4px 12px")
+                :border $ str "\"1px solid " (hsl 0 0 90)
+        |style-title $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-title $ {}
+              "\"&" $ {} (:font-size 20) (:font-weight :bold) (:margin "\"24px 0 8px")
+      :ns $ %{} :CodeEntry (:doc |)
+        :code $ quote
+          ns app.comp.container $ :require (respo-ui.core :as ui)
+            respo.css :refer $ defstyle
+            respo-ui.css :as css
+            respo.util.format :refer $ hsl
+            respo.core :refer $ defcomp defeffect <> >> div button textarea list-> span input a
+            respo.comp.space :refer $ =<
+            reel.comp.reel :refer $ comp-reel
+            respo-md.comp.md :refer $ comp-md comp-md-block
+            app.config :refer $ dev?
+            app.comp.home :refer $ comp-visual render-link
+            respo-ui.comp :refer $ comp-cirru-snippet
+    |app.comp.home $ %{} :FileEntry
+      :defs $ {}
         |comp-visual $ %{} :CodeEntry (:doc |)
           :code $ quote
             defcomp comp-visual () $ div
-              {} $ :class-name css/row-center
+              {} (:class-name css/row-center)
+                :style $ {} (:gap "\"28px") (:flex-wrap :wrap)
               div $ {} (:class-name style-logo)
-              =< 24 nil
               div
-                {} (:class-name css/column) (:style style-suggest)
+                {} $ :class-name css/column
                 div ({})
                   div $ {}
                     :class-name $ str-spaced style-branch-name style-R
@@ -103,7 +189,7 @@
               "\"&" $ {} (:font-size 32) (:font-family ui/font-fancy) (:line-height 1.0)
         |style-description $ %{} :CodeEntry (:doc |)
           :code $ quote
-            def style-description $ {} (:font-size 16) (:font-weight 400)
+            def style-description $ {} (:font-size 16) (:font-weight 400) (:line-height 2)
               :color $ hsl 0 0 30
               :font-family |Hind
         |style-github $ %{} :CodeEntry (:doc |)
@@ -127,9 +213,6 @@
         |style-section $ %{} :CodeEntry (:doc |)
           :code $ quote
             def style-section $ {} (:display :inline-block) (:margin-right 24)
-        |style-suggest $ %{} :CodeEntry (:doc |)
-          :code $ quote
-            def style-suggest $ {} (:padding-top 48) (:padding-bottom 48) (:gap 8)
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.home $ :require
@@ -175,6 +258,7 @@
           :code $ quote
             defn main! ()
               println "\"Running mode:" $ if config/dev? "\"dev" "\"release"
+              if config/dev? $ load-console-formatter!
               if ssr? $ render-app! realize-ssr!
               render-app! render!
               add-watch *reel :changes $ fn (reel prev) (render-app! render!)
