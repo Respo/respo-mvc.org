@@ -1057,6 +1057,32 @@
                               |T $ %{} :Leaf (:at 1695918549321) (:by |rJG4IHzWf) (:text |render-link)
                               |b $ %{} :Leaf (:at 1695918549321) (:by |rJG4IHzWf) (:text "||API Docs")
                               |h $ %{} :Leaf (:at 1695918549321) (:by |rJG4IHzWf) (:text ||https://github.com/Respo/respo.calcit/wiki/API)
+                          |l $ %{} :Expr (:at 1715539856390) (:by |rJG4IHzWf)
+                            :data $ {}
+                              |D $ %{} :Leaf (:at 1715539857388) (:by |rJG4IHzWf) (:text |span)
+                              |L $ %{} :Expr (:at 1715539857633) (:by |rJG4IHzWf)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1715539858042) (:by |rJG4IHzWf) (:text |{})
+                              |T $ %{} :Expr (:at 1715539831430) (:by |rJG4IHzWf)
+                                :data $ {}
+                                  |T $ %{} :Leaf (:at 1715539832051) (:by |rJG4IHzWf) (:text |img)
+                                  |b $ %{} :Expr (:at 1715539855280) (:by |rJG4IHzWf)
+                                    :data $ {}
+                                      |T $ %{} :Leaf (:at 1715539834070) (:by |rJG4IHzWf) (:text |{})
+                                      |X $ %{} :Expr (:at 1715539988557) (:by |rJG4IHzWf)
+                                        :data $ {}
+                                          |T $ %{} :Leaf (:at 1715539989335) (:by |rJG4IHzWf) (:text |:style)
+                                          |b $ %{} :Expr (:at 1715539989615) (:by |rJG4IHzWf)
+                                            :data $ {}
+                                              |T $ %{} :Leaf (:at 1715539989953) (:by |rJG4IHzWf) (:text |{})
+                                              |b $ %{} :Expr (:at 1715539990230) (:by |rJG4IHzWf)
+                                                :data $ {}
+                                                  |T $ %{} :Leaf (:at 1715540003792) (:by |rJG4IHzWf) (:text |:vertical-align)
+                                                  |b $ %{} :Leaf (:at 1715539993563) (:by |rJG4IHzWf) (:text |:middle)
+                                      |b $ %{} :Expr (:at 1715539854182) (:by |rJG4IHzWf)
+                                        :data $ {}
+                                          |T $ %{} :Leaf (:at 1715539836004) (:by |rJG4IHzWf) (:text |:src)
+                                          |b $ %{} :Leaf (:at 1715539845705) (:by |rJG4IHzWf) (:text "|\"https://img.shields.io/github/v/release/calcit-lang/calcit")
         |render-link $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1621841901063) (:by |rJG4IHzWf)
             :data $ {}
@@ -1310,7 +1336,7 @@
                   |r $ %{} :Expr (:at 1621841901063) (:by |rJG4IHzWf)
                     :data $ {}
                       |T $ %{} :Leaf (:at 1621841901063) (:by |rJG4IHzWf) (:text |:margin-right)
-                      |j $ %{} :Leaf (:at 1671200122773) (:by |rJG4IHzWf) (:text |24)
+                      |j $ %{} :Leaf (:at 1715539972299) (:by |rJG4IHzWf) (:text |12)
       :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1621841892045) (:by |rJG4IHzWf)
           :data $ {}
@@ -1385,13 +1411,6 @@
                     |h $ %{} :Expr (:at 1695918013625) (:by |rJG4IHzWf)
                       :data $ {}
                         |T $ %{} :Leaf (:at 1695918014566) (:by |rJG4IHzWf) (:text |defstyle)
-                |zD $ %{} :Expr (:at 1695918553974) (:by |rJG4IHzWf)
-                  :data $ {}
-                    |T $ %{} :Leaf (:at 1695918562232) (:by |rJG4IHzWf) (:text |app.comp.header)
-                    |b $ %{} :Leaf (:at 1695918562918) (:by |rJG4IHzWf) (:text |:refer)
-                    |h $ %{} :Expr (:at 1695918563221) (:by |rJG4IHzWf)
-                      :data $ {}
-                        |T $ %{} :Leaf (:at 1695918566378) (:by |rJG4IHzWf) (:text |render-link)
     |app.config $ %{} :FileEntry
       :defs $ {}
         |cdn? $ %{} :CodeEntry (:doc |)
@@ -1646,8 +1665,7 @@
               |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |mount-target)
               |r $ %{} :Expr (:at 1499755354983) (:by nil)
                 :data $ {}
-                  |T $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |.querySelector)
-                  |j $ %{} :Leaf (:at 1499755354983) (:by |root) (:text |js/document)
+                  |j $ %{} :Leaf (:at 1715539798955) (:by |rJG4IHzWf) (:text |js/document.querySelector)
                   |r $ %{} :Leaf (:at 1499755354983) (:by |root) (:text ||.app)
         |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1533919515671) (:by |rJG4IHzWf)
