@@ -169,6 +169,10 @@
                     button $ {} (:inner-text |Examples)
                       :class-name $ str-spaced css/button style-larger-button
                   render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API
+                  span ({})
+                    img $ {}
+                      :style $ {} (:vertical-align :middle)
+                      :src "\"https://img.shields.io/github/v/release/calcit-lang/calcit"
         |render-link $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn render-link (text path)
@@ -212,7 +216,7 @@
                 :vertical-align :middle
         |style-section $ %{} :CodeEntry (:doc |)
           :code $ quote
-            def style-section $ {} (:display :inline-block) (:margin-right 24)
+            def style-section $ {} (:display :inline-block) (:margin-right 12)
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.home $ :require
@@ -225,7 +229,6 @@
             app.resource :refer $ inline
             "\"cirru-color" :as cirru-color
             respo.css :refer $ defstyle
-            app.comp.header :refer $ render-link
     |app.config $ %{} :FileEntry
       :defs $ {}
         |cdn? $ %{} :CodeEntry (:doc |)
@@ -272,7 +275,7 @@
               println "|App started."
         |mount-target $ %{} :CodeEntry (:doc |)
           :code $ quote
-            def mount-target $ .querySelector js/document |.app
+            def mount-target $ js/document.querySelector |.app
         |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn persist-storage! () $ js/localStorage.setItem (:storage-key config/site)
