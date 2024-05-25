@@ -5,4 +5,4 @@
     |Respo/respo.calcit |main
     |Respo/reel.calcit |main
     |Respo/respo-markdown.calcit |main
-    |Respo/respo-ui.calcit |0.5.0
+    |Respo/respo-ui.calcit |main

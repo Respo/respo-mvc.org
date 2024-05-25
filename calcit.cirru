@@ -1082,7 +1082,7 @@
                                       |b $ %{} :Expr (:at 1715539854182) (:by |rJG4IHzWf)
                                         :data $ {}
                                           |T $ %{} :Leaf (:at 1715539836004) (:by |rJG4IHzWf) (:text |:src)
-                                          |b $ %{} :Leaf (:at 1715539845705) (:by |rJG4IHzWf) (:text "|\"https://img.shields.io/github/v/release/calcit-lang/calcit")
+                                          |b $ %{} :Leaf (:at 1716661857290) (:by |rJG4IHzWf) (:text "|\"https://img.shields.io/github/v/release/Respo/respo.calcit")
         |render-link $ %{} :CodeEntry (:doc |)
           :code $ %{} :Expr (:at 1621841901063) (:by |rJG4IHzWf)
             :data $ {}

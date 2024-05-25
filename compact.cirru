@@ -172,7 +172,7 @@
                   span ({})
                     img $ {}
                       :style $ {} (:vertical-align :middle)
-                      :src "\"https://img.shields.io/github/v/release/calcit-lang/calcit"
+                      :src "\"https://img.shields.io/github/v/release/Respo/respo.calcit"
         |render-link $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn render-link (text path)
