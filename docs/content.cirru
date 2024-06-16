@@ -103,12 +103,12 @@
             effect-focus data
             div ({})
               input $ {}
-  :: :text |"The effect will be called during with action in `:mount` `:before-update` `:update` and `:unmount`. \nRespo would call with `:mount` and `:unmount`, also compare the list of arguments `(data)` passed to `effect-focus` with arguments in previous render phase and trigger `:before-update` and `:update` on changes."
+  :: :text "|The effect will be called during with action in `:mount` `:before-update` `:update` and `:unmount`. \nRespo would call with `:mount` and `:unmount`, also compare the list of arguments `(data)` passed to `effect-focus` with arguments in previous render phase and trigger `:before-update` and `:update` on changes."
 
   :: :title "|States Management"
 
   :: :pair
-    :: :text "|Respo uses an Atom to maintain global states. Global states and "Single Source of Truth" are preferred"
+    :: :text "|Respo uses an Atom to maintain global states. Global states and \"Single Source of Truth\" are preferred"
     :: :list $ []
       :: :snippet $ quote
         defatom *store $ {}
@@ -149,3 +149,6 @@
   :: :text "|For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/main/compact.cirru#L10)."
 
   :: :text "|[Find me on Twitter](https://twitter.com/tiyecirru). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page."
+
+  :: :title "|Respo in Rust"
+  :: :text "|There's also |[Respo.rs](https://docs.rs/crate/respo/latest) which reimplemented Respo in Rust. It contains experiments running Respo in a language with builtin sum types, pattern matching, and traits(type class)."
