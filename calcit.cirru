@@ -111,7 +111,7 @@
                                       |b $ %{} :Expr (:at 1695922663416) (:by |rJG4IHzWf)
                                         :data $ {}
                                           |T $ %{} :Leaf (:at 1695922663416) (:by |rJG4IHzWf) (:text |:max-width)
-                                          |b $ %{} :Leaf (:at 1695922717537) (:by |rJG4IHzWf) (:text |960)
+                                          |b $ %{} :Leaf (:at 1718560401206) (:by |rJG4IHzWf) (:text |1200)
                                       |h $ %{} :Expr (:at 1695921950585) (:by |rJG4IHzWf)
                                         :data $ {}
                                           |T $ %{} :Leaf (:at 1695921950585) (:by |rJG4IHzWf) (:text |:margin)
@@ -746,7 +746,7 @@
                           |l $ %{} :Expr (:at 1695923509730) (:by |rJG4IHzWf)
                             :data $ {}
                               |T $ %{} :Leaf (:at 1695923511222) (:by |rJG4IHzWf) (:text |:margin)
-                              |b $ %{} :Leaf (:at 1695923560768) (:by |rJG4IHzWf) (:text "|\"24px 0 8px")
+                              |b $ %{} :Leaf (:at 1718560448074) (:by |rJG4IHzWf) (:text "|\"48px 0 8px")
       :ns $ %{} :CodeEntry (:doc |)
         :code $ %{} :Expr (:at 1499755354983) (:by nil)
           :data $ {}
@@ -1533,7 +1533,7 @@
                           |r $ %{} :Leaf (:at 1584874671745) (:by |rJG4IHzWf) (:text |:states)
                   |T $ %{} :Expr (:at 1518156274050) (:by |root)
                     :data $ {}
-                      |j $ %{} :Leaf (:at 1518156276516) (:by |root) (:text |println)
+                      |j $ %{} :Leaf (:at 1718560664768) (:by |rJG4IHzWf) (:text |js/console.log)
                       |r $ %{} :Leaf (:at 1547437698992) (:by |root) (:text "|\"Dispatch:")
                       |v $ %{} :Leaf (:at 1518156280471) (:by |root) (:text |op)
               |v $ %{} :Expr (:at 1584780634192) (:by |rJG4IHzWf)

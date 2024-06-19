@@ -23,7 +23,7 @@
                   =< nil 40
                   div
                     {} $ :style
-                      {} (:max-width 960) (:margin :auto) (:font-size 16) (:padding "\"0 40px")
+                      {} (:max-width 1200) (:margin :auto) (:font-size 16) (:padding "\"0 40px")
                     list-> ({})
                       -> content-data $ map-indexed
                         fn (idx item)
@@ -123,7 +123,7 @@
         |style-title $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-title $ {}
-              "\"&" $ {} (:font-size 20) (:font-weight :bold) (:margin "\"24px 0 8px")
+              "\"&" $ {} (:font-size 20) (:font-weight :bold) (:margin "\"48px 0 8px")
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.container $ :require (respo-ui.core :as ui)
@@ -255,7 +255,7 @@
             defn dispatch! (op)
               when
                 and config/dev? $ not= (nth op 0) :states
-                println "\"Dispatch:" op
+                js/console.log "\"Dispatch:" op
               reset! *reel $ reel-updater updater @*reel op
         |main! $ %{} :CodeEntry (:doc |)
           :code $ quote
