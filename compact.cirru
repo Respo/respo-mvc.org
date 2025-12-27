@@ -18,6 +18,7 @@
                   content-data $ parse-cirru-edn (include-file! "\"./docs/content.cirru")
                 div
                   {} $ :class-name css/global
+                  comp-header
                   comp-visual
                   div
                     {} $ :class-name style-main-container
@@ -238,6 +239,56 @@
             app.comp.home :refer $ comp-visual render-link comp-features
             respo-ui.comp :refer $ comp-cirru-snippet
             app.config :refer $ dev? brand-color
+            app.comp.header :refer $ comp-header
+        :examples $ []
+    |app.comp.header $ %{} :FileEntry
+      :defs $ {}
+        |comp-header $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defcomp comp-header () $ div
+              {} $ :class-name style-header
+              div
+                {} $ :style
+                  {} (:font-family ui/font-fancy) (:font-weight 300) (:font-size 20)
+                <> "\"Respo"
+              div ({})
+                a $ {} (:href "\"http://guide.respo-mvc.org/") (:target "\"_blank") (:class-name style-link) (:inner-text "\"Guide")
+                a $ {} (:href "\"https://github.com/Respo/respo-examples") (:target "\"_blank") (:class-name style-link) (:inner-text "\"Examples")
+                a $ {} (:href "\"https://github.com/Respo/respo.calcit/wiki/API") (:target "\"_blank") (:class-name style-link) (:inner-text "\"APIs")
+                a $ {} (:href "\"https://github.com/Respo") (:target "\"_blank") (:class-name style-link) (:inner-text "\"GitHub")
+          :examples $ []
+        |style-header $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-header $ {}
+              "\"&" $ {} (:height 60) (:width "\"100%") (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "\"0 16px")
+                :border-bottom $ str "\"1px solid " (hsl 0 0 94)
+                :background-color $ hsl 0 0 100 0.8
+                :backdrop-filter "\"blur(8px)"
+                :position :sticky
+                :top 0
+                :z-index 999
+          :examples $ []
+        |style-link $ %{} :CodeEntry (:doc |)
+          :code $ quote
+            defstyle style-link $ {}
+              "\"&" $ {} (:margin-left 16)
+                :color $ hsl 0 0 40
+                :text-decoration :none
+                :font-family ui/font-fancy
+                :font-size 14
+                :cursor :pointer
+                :transition-duration "\"200ms"
+              "\"&:hover" $ {}
+                :color $ hsl 200 80 60
+          :examples $ []
+      :ns $ %{} :CodeEntry (:doc |)
+        :code $ quote
+          ns app.comp.header $ :require
+            respo.core :refer $ defcomp div span a button img <>
+            respo.css :refer $ defstyle
+            respo-ui.core :as ui
+            respo-ui.css :as css
+            respo.util.format :refer $ hsl
         :examples $ []
     |app.comp.home $ %{} :FileEntry
       :defs $ {}
@@ -277,9 +328,6 @@
                   {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
                   button $ {} (:inner-text |Examples)
                     :class-name $ str-spaced css/button style-larger-button
-                render-link |GitHub |https://github.com/Respo |_blank
-                render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API
-                render-link "|Agent Guide" |https://respo-mvc.org/Respo-Agent.md |_blank
                 span ({})
                   img $ {}
                     :style $ {} (:vertical-align :middle)
