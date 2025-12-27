@@ -23,6 +23,7 @@ jobs:
       run: >
         caps --ci && cr --once -1 js
         && yarn && yarn vite build --base=./
+        && cp llms/Respo-Agent.md dist/
 
     - name: Deploy to server
       id: deploy

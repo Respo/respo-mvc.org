@@ -30,6 +30,7 @@
                           [] idx $ render-item item
                   =< nil 80
                   comp-footer
+          :examples $ []
         |comp-footer $ %{} :CodeEntry (:doc |)
           :code $ quote
             defcomp comp-footer () $ div
@@ -41,6 +42,7 @@
                     :border-radius "\"8px"
                 comp-md-block "\"Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
               render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community
+          :examples $ []
         |hacky-wrap-code $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn hacky-wrap-code (code)
@@ -48,9 +50,11 @@
                   v $ .-value code
                 set! (.-value code) (js-array v)
                 , code
+          :examples $ []
         |include-file! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defmacro include-file! (path) (read-file path)
+          :examples $ []
         |render-item $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn render-item (item)
@@ -106,24 +110,29 @@
                       if (some? desc) (<> desc style-desc)
                 _ $ div ({})
                   <> $ str (nth item 0)
+          :examples $ []
         |style-desc $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-desc $ {}
               "\"&" $ {}
                 :color $ hsl 0 0 40
+          :examples $ []
         |style-footer $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-footer $ {}
               "\"&" $ {} (:max-width 960) (:margin :auto) (:font-size 16) (:padding "\"0 40px") (:padding "\"0 20px 24px")
+          :examples $ []
         |style-link-card $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-link-card $ {}
               "\"&" $ {} (:border-radius "\"8px") (:padding "\"4px 12px")
                 :border $ str "\"1px solid " (hsl 0 0 90)
+          :examples $ []
         |style-title $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-title $ {}
               "\"&" $ {} (:font-size 20) (:font-weight :bold) (:margin "\"48px 0 8px")
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.container $ :require (respo-ui.core :as ui)
@@ -137,6 +146,7 @@
             app.config :refer $ dev?
             app.comp.home :refer $ comp-visual render-link
             respo-ui.comp :refer $ comp-cirru-snippet
+        :examples $ []
     |app.comp.home $ %{} :FileEntry
       :defs $ {}
         |comp-visual $ %{} :CodeEntry (:doc |)
@@ -169,43 +179,53 @@
                     button $ {} (:inner-text |Examples)
                       :class-name $ str-spaced css/button style-larger-button
                   render-link "|API Docs" |https://github.com/Respo/respo.calcit/wiki/API
+                  render-link "|Agent Guide" |https://respo-mvc.org/Respo-Agent.md |_blank
                   span ({})
                     img $ {}
                       :style $ {} (:vertical-align :middle)
                       :src "\"https://img.shields.io/github/v/release/Respo/respo.calcit"
+          :examples $ []
         |render-link $ %{} :CodeEntry (:doc |)
           :code $ quote
-            defn render-link (text path)
+            defn render-link (text path ? target)
               div
                 {} $ :style style-section
                 a $ {} (:inner-text text)
                   :href $ str path
                   :style style-link
                   :class-name css/link
+                  :target $ either target |_self
+          :examples $ []
         |style-R $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-R $ {}
               "\"&" $ {} (:color "\"#cd372d") (:transition-duration "\"400ms") (:display :inline-block)
               "\"div:hover>&" $ {} (:transform "\"rotate(180deg) scale(1,-1)")
+          :examples $ []
         |style-branch-name $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-branch-name $ {}
               "\"&" $ {} (:font-size 32) (:font-family ui/font-fancy) (:line-height 1.0)
+          :examples $ []
         |style-description $ %{} :CodeEntry (:doc |)
           :code $ quote
             def style-description $ {} (:font-size 16) (:font-weight 400) (:line-height 2)
               :color $ hsl 0 0 30
               :font-family |Hind
+          :examples $ []
         |style-github $ %{} :CodeEntry (:doc |)
           :code $ quote
             def style-github $ {} (:text-decoration :none)
+          :examples $ []
         |style-larger-button $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-larger-button $ {}
               "\"&" $ {} (:border-radius "\"20px") (:line-height "\"32px") (:padding "\"0 16px")
+          :examples $ []
         |style-link $ %{} :CodeEntry (:doc |)
           :code $ quote
             def style-link $ {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
+          :examples $ []
         |style-logo $ %{} :CodeEntry (:doc |)
           :code $ quote
             defstyle style-logo $ {}
@@ -214,9 +234,11 @@
                 :background-size :cover
                 :display :inline-block
                 :vertical-align :middle
+          :examples $ []
         |style-section $ %{} :CodeEntry (:doc |)
           :code $ quote
             def style-section $ {} (:display :inline-block) (:margin-right 12)
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.comp.home $ :require
@@ -229,6 +251,7 @@
             app.resource :refer $ inline
             "\"cirru-color" :as cirru-color
             respo.css :refer $ defstyle
+        :examples $ []
     |app.config $ %{} :FileEntry
       :defs $ {}
         |cdn? $ %{} :CodeEntry (:doc |)
@@ -238,18 +261,23 @@
                 , false
               (exists? js/process) (= "\"true" js/process.env.cdn)
               :else false
+          :examples $ []
         |dev? $ %{} :CodeEntry (:doc |)
           :code $ quote (def dev? true)
+          :examples $ []
         |site $ %{} :CodeEntry (:doc |)
           :code $ quote
             def site $ {} (:dev-ui "\"http://localhost:8100/main-fonts.css") (:release-ui "\"http://cdn.tiye.me/favored-fonts/main-fonts.css") (:cdn-url "\"http://cdn.tiye.me/calcit-workflow/") (:title "\"Calcit") (:icon "\"http://cdn.tiye.me/logo/mvc-works.png") (:storage-key "\"workflow")
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote (ns app.config)
+        :examples $ []
     |app.main $ %{} :FileEntry
       :defs $ {}
         |*reel $ %{} :CodeEntry (:doc |)
           :code $ quote
             defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
+          :examples $ []
         |dispatch! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn dispatch! (op)
@@ -257,6 +285,7 @@
                 and config/dev? $ not= (nth op 0) :states
                 js/console.log "\"Dispatch:" op
               reset! *reel $ reel-updater updater @*reel op
+          :examples $ []
         |main! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn main! ()
@@ -273,13 +302,16 @@
                 when (some? raw)
                   dispatch! $ :: :hydrate-storage (parse-cirru-edn raw)
               println "|App started."
+          :examples $ []
         |mount-target $ %{} :CodeEntry (:doc |)
           :code $ quote
             def mount-target $ js/document.querySelector |.app
+          :examples $ []
         |persist-storage! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn persist-storage! () $ js/localStorage.setItem (:storage-key config/site)
               format-cirru-edn $ :store @*reel
+          :examples $ []
         |reload! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn reload! () $ if (nil? build-errors)
@@ -288,10 +320,12 @@
                 reset! *reel $ refresh-reel @*reel schema/store updater
                 hud! "\"ok~" "\"Ok"
               hud! "\"error" build-errors
+          :examples $ []
         |render-app! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn render-app! (renderer)
               renderer mount-target (comp-container @*reel) dispatch!
+          :examples $ []
         |repeat! $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn repeat! (duration cb)
@@ -299,12 +333,15 @@
                 fn () (cb)
                   repeat! (* 1000 duration) cb
                 * 1000 duration
+          :examples $ []
         |snippets $ %{} :CodeEntry (:doc |)
           :code $ quote
             defn snippets () $ println config/cdn?
+          :examples $ []
         |ssr? $ %{} :CodeEntry (:doc |)
           :code $ quote
             def ssr? $ some? (js/document.querySelector |meta.respo-ssr)
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.main $ :require
@@ -318,13 +355,16 @@
             app.config :as config
             "\"./calcit.build-errors" :default build-errors
             "\"bottom-tip" :default hud!
+        :examples $ []
     |app.resource $ %{} :FileEntry
       :defs $ {}
         |inline $ %{} :CodeEntry (:doc |)
           :code $ quote
             defmacro inline (path) (read-file path)
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote (ns app.resource)
+        :examples $ []
     |app.schema $ %{} :FileEntry
       :defs $ {}
         |store $ %{} :CodeEntry (:doc |)
@@ -332,8 +372,10 @@
             def store $ {}
               :states $ {}
                 :cursor $ []
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote (ns app.schema)
+        :examples $ []
     |app.updater $ %{} :FileEntry
       :defs $ {}
         |updater $ %{} :CodeEntry (:doc |)
@@ -344,7 +386,9 @@
                   update-states store cursor s
                 (:hydrate-storage data) data
                 _ $ do (eprintln "\"Unknown op:" op) store
+          :examples $ []
       :ns $ %{} :CodeEntry (:doc |)
         :code $ quote
           ns app.updater $ :require
             respo.cursor :refer $ update-states
+        :examples $ []
