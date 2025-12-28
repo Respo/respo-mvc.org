@@ -266,7 +266,7 @@
                 :backdrop-filter "\"blur(8px)"
                 :position :sticky
                 :top 0
-                :z-index 999
+                :z-index |999
           :examples $ []
         |style-link $ %{} :CodeEntry (:doc |)
           :code $ quote
