@@ -252,7 +252,6 @@
                   {} (:font-family ui/font-fancy) (:font-weight 300) (:font-size 20)
                 <> "\"Respo"
               div ({})
-                a $ {} (:href "\"http://guide.respo-mvc.org/") (:target "\"_blank") (:class-name style-link) (:inner-text "\"Guide")
                 a $ {} (:href "\"https://github.com/Respo/respo-examples") (:target "\"_blank") (:class-name style-link) (:inner-text "\"Examples")
                 a $ {} (:href "\"https://github.com/Respo/respo.calcit/wiki/API") (:target "\"_blank") (:class-name style-link) (:inner-text "\"APIs")
                 a $ {} (:href "\"https://github.com/Respo") (:target "\"_blank") (:class-name style-link) (:inner-text "\"GitHub")
@@ -322,11 +321,11 @@
                   :style $ {} (:gap "\"8px")
                 a
                   {} (:href |http://guide.respo-mvc.org/) (:target |_blank)
-                  button $ {} (:inner-text |Guidebook)
+                  button $ {} (:inner-text |Guide)
                     :class-name $ str-spaced css/button-primary style-larger-button
                 a
-                  {} (:href |https://github.com/Respo/respo-examples) (:target |_blank)
-                  button $ {} (:inner-text |Examples)
+                  {} (:href |https://respo-mvc.org/Agents.md) (:target |_blank)
+                  button $ {} (:inner-text |Agents)
                     :class-name $ str-spaced css/button style-larger-button
                 span ({})
                   img $ {}
