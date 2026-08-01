@@ -23,6 +23,23 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
+### Development
+
+This project uses a single `calcit.cirru` source snapshot. Install and verify
+the current toolchain with:
+
+```bash
+caps
+corepack enable
+corepack prepare yarn@4.12.0 --activate
+yarn install --immutable
+cr js
+yarn vite build --base=./
+```
+
+Use `cr edit` or `cr tree` for Calcit source changes; do not directly edit
+`calcit.cirru`. See [Agents.md](./Agents.md) for the current CLI workflow.
+
 ### License
 
 MIT

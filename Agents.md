@@ -4,12 +4,9 @@
 
 ## ⚠️ 重要警告：禁止直接修改的文件
 
-以下文件**严格禁止使用文本替换或直接编辑**：
+本项目的 Calcit 源码只保存在 **`calcit.cirru`**。它是结构化快照，格式对空格和结构敏感；必须使用 `cr edit` 或 `cr tree` 查询和修改，禁止文本替换。
 
-- **`calcit.cirru`** - 这是 calcit-editor 结构化编辑器的专用格式，包含完整的编辑器元数据
-- **`compact.cirru`** - 这是 Calcit 程序的紧凑快照格式，必须使用 `cr edit` 相关命令进行修改
-
-这两个文件的格式对空格和结构极其敏感，直接文本修改会破坏文件结构。请使用下面文档中的 CLI 命令进行代码查询和修改。
+`compact.cirru` 是旧项目的兼容文件名。本项目已经迁移，不应重新创建或编辑它。
 
 ## Calcit 与 Cirru 的关系
 
@@ -19,7 +16,7 @@
 
 **具体体现：**
 
-- `compact.cirru` 和 `calcit.cirru` 是用 Cirru 格式存储的 Calcit 程序
+- `calcit.cirru` 是本项目用 Cirru 格式存储的 Calcit 程序
 - `cr cirru` 工具用于 Cirru 语法与 JSON 的转换（帮助理解和生成代码）
 - Cirru 语法特点：
   - 用缩进代替括号（类似 Python/YAML）
@@ -41,14 +38,14 @@ Calcit 程序使用 `cr` 命令：
 
 ### 主要运行命令
 
-- `cr` 或 `cr compact.cirru` - 代码解释执行，默认读取 config 执行 init-fn 定义的入口
-- `cr compact.cirru js` - 编译生成 JavaScript 代码
-- `cr -1 <filepath>` - 执行一次然后退出（不进入监听模式）
+- `cr` - 代码解释执行，默认读取 `calcit.cirru` 的 default entry；默认执行一次
+- `cr -w` - 解释执行并监听变更
+- `cr js` - 编译生成 JavaScript；默认执行一次
+- `cr js -w` - 编译 JavaScript 并监听变更
 - `cr --check-only` - 仅检查代码正确性，不执行程序
   - 对 init_fn 和 reload_fn 进行预处理验证
   - 输出：预处理进度、warnings、检查耗时
   - 用于 CI/CD 或快速验证代码修改
-- `cr js -1` - 检查代码正确性，生成 JavaScript(不进入监听模式)
 - `cr js --check-only` - 检查代码正确性，不生成 JavaScript
 - `cr eval '<code>' [--dep <module>...]` - 执行一段 Calcit 代码片段，用于快速验证写法
   - `--dep` 参数可以加载 `~/.config/calcit/modules/` 中的模块（直接使用模块名）
@@ -81,16 +78,16 @@ Calcit 程序使用 `cr` 命令：
 - `cr query pkg` - 获取项目包名
 - `cr query config` - 读取项目配置（init_fn, reload_fn, version）
 - `cr query error` - 读取 .calcit-error.cirru 错误堆栈文件
-- `cr query modules` - 列出项目依赖的模块（来自 compact.cirru 配置）
+- `cr query modules` - 列出 `calcit.cirru` 配置中的项目依赖模块
 
 **渐进式代码探索（Progressive Disclosure）：**
 
 - `cr query peek <namespace/definition>` - 查看定义签名（参数、文档、表达式数量），不返回完整实现体
   - 输出：Doc、Form 类型、参数列表、Body 表达式数量、首个表达式预览、Examples 数量
   - 用于快速了解函数接口，减少 token 消耗
-- `cr query def <namespace/definition> [-j]` - 读取定义的完整 Cirru 代码
+- `cr query def <namespace/definition> [--json]` - 读取定义的完整 Cirru 代码
   - 默认输出：Doc、Examples 数量、Cirru 格式代码
-  - `-j` / `--json`：同时输出 JSON 格式（用于程序化处理）
+  - `--json`：同时输出 JSON 格式（用于程序化处理）
   - 推荐：LLM 直接读取 Cirru 格式即可，通常不需要 JSON
 - `cr query examples <namespace/definition>` - 读取定义的示例代码
   - 输出：每个 example 的 Cirru 格式和 JSON 格式
@@ -111,17 +108,17 @@ Calcit 程序使用 `cr` 命令：
 - `cr query search <pattern> [-f <namespace/definition>] [-l] [-d <depth>] [-p <start-path>]` - 搜索叶子节点（字符串）
 
   - `<pattern>` - 位置参数，要搜索的字符串模式
-  - `-f` / `--filter` - 过滤到特定命名空间或定义（可选）
-  - `-l` / `--loose`：宽松匹配，包含模式（匹配所有包含该模式的叶子节点）
-  - `-d <depth>`：限制搜索深度（0 = 无限制）
-  - `-p` / `--start-path`：从指定路径开始搜索（逗号分隔的索引，如 `"3,2,1"`）
+  - `--filter <namespace/definition>` - 过滤到特定命名空间或定义（可选）
+  - 默认是包含匹配；使用 `--exact` 做精确匹配
+  - `--max-depth <depth>`：限制搜索深度（0 = 无限制）
+  - `--start-path <path>`：从指定路径开始搜索（推荐 `@3.2.1` 格式）
     - 不指定时从根节点开始搜索整个定义
     - 指定后只搜索该路径下的子树，适合在大型定义中缩小搜索范围
   - 返回：匹配节点的完整路径 + 父级上下文预览
   - 示例：
-    - `cr query search "println" -f app.main/main -l` - 在 main 函数中搜索包含 "println" 的节点
+    - `cr query search "println" --filter app.main/main` - 在 main 函数中搜索包含 "println" 的节点
     - `cr query search "div"` - 全局精确搜索 "div"
-    - `cr query search "btn" -f app.main/render -p "3,2" -l` - 从路径 [3,2] 开始搜索包含 "btn" 的节点
+    - `cr query search "btn" --filter app.main/render --start-path "@3.2"` - 从路径 [3,2] 开始搜索包含 "btn" 的节点
 
 - `cr query search-pattern <pattern> [-f <namespace/definition>] [-l] [-j] [-d <depth>]` - 搜索结构模式
   - `<pattern>` - 位置参数，Cirru one-liner 或 JSON 数组模式
@@ -137,7 +134,7 @@ Calcit 程序使用 `cr` 命令：
 
 - 输出格式：`[路径] in 父级上下文`
 - 路径格式：`[索引1,索引2,...]` 表示从根节点到匹配节点的路径
-- 可配合 `cr tree show <target> -p "<path>"` 查看具体节点内容
+- 可配合 `cr tree show <target> --path "<path>"` 查看具体节点内容
 
 ### 文档子命令 (`cr docs`)
 
@@ -218,7 +215,7 @@ cr query modules
 
 **主要操作：**
 
-- `cr tree show <ns/def> -p "<path>" [-j]` - 查看节点
+- `cr tree show <ns/def> --path "<path>" [--json]` - 查看节点
   - 默认输出：节点类型、Cirru 预览、子节点索引列表、操作提示
   - `-j` / `--json`：同时输出 JSON 格式（用于程序化处理）
   - 推荐：直接查看 Cirru 格式即可，通常不需要 JSON
@@ -239,17 +236,17 @@ cr query modules
 
 ```bash
 # 1. 搜索定位
-cr query search "target" -f namespace/def -l
+cr query search "target" --filter namespace/def
 
 # 2. 确认节点（命令会显示子节点和路径）
-cr tree show namespace/def -p "<path>"
+cr tree show namespace/def --path "<path>"
 
 # 3. 执行修改（命令会显示 Before/After 和验证提示）
-cr tree replace namespace/def -p "<path>" --leaf -e '<value>'
+cr tree replace namespace/def --path "<path>" --code 'quote |<value>'
 
 # 4. 批量修改：从后往前或重新搜索
-cr tree delete namespace/def -p "3,2,3"  # 先删大索引
-cr tree delete namespace/def -p "3,2,2"
+cr tree delete namespace/def --path "3,2,3"  # 先删大索引
+cr tree delete namespace/def --path "3,2,2"
 ```
 
 **关键技巧：**
@@ -263,7 +260,7 @@ cr tree delete namespace/def -p "3,2,2"
 
 ### 代码编辑 (`cr edit`)
 
-直接编辑 compact.cirru 项目代码，支持三种输入方式：
+直接编辑 `calcit.cirru` 项目代码，支持三种输入方式：
 
 - `--file <path>` 或 `-f <path>` - 从文件读取（默认 Cirru 格式，使用 `-J` 指定 JSON）
 - `--json <string>` 或 `-j <string>` - 内联 JSON 字符串
@@ -318,7 +315,8 @@ cr tree delete namespace/def -p "3,2,2"
 
 - `cr edit add-module <module-path>` - 添加模块依赖
 - `cr edit rm-module <module-path>` - 删除模块依赖
-- `cr edit config <key> <value>` - 设置配置（key: init-fn, reload-fn, version）
+- `cr config set <key> <value>` - 设置配置（key: mode, init-fn, reload-fn, description, version）
+- `cr config version patch|minor|major` - 递增项目版本
 
 **增量变更导出：**
 
@@ -421,7 +419,7 @@ send-event! $ :: :clipboard/read text
 
 ## 开发调试
 
-简单脚本用 `cr -1 <filepath>` 直接执行。编译 JavaScript 用 `cr -1 <filepath> js` 执行一次编译。
+简单脚本用 `cr <filepath>` 直接执行。编译 JavaScript 用 `cr <filepath> js` 执行一次编译。
 
 Calcit snapshot 文件中 config 有 `init-fn` 和 `reload-fn` 配置：
 
@@ -439,8 +437,8 @@ cr js     # JS 编译模式
 cr edit inc --changed ns/def
 
 # 3. 一次性执行/编译（用于简单脚本）
-cr -1          # 执行一次
-cr -1 js       # 编译一次
+cr             # 执行一次
+cr js          # 编译一次
 ```
 
 ### 增量触发更新（推荐）⭐⭐⭐
@@ -502,8 +500,8 @@ cr query error  # 命令会显示详细的错误信息或成功状态
 
 ```bash
 # 极少数情况：增量更新不符合预期时
-cr -1 js           # 重新编译 JavaScript
-cr -1              # 重新执行程序
+cr js              # 重新编译 JavaScript
+cr                 # 重新执行程序
 
 # 或重启监听模式（Ctrl+C 停止后重启）
 cr        # 或 cr js
@@ -549,7 +547,7 @@ cr edit def app.core/multiply -e 'defn multiply (x y) (* x y)'
 cr edit def 'app.core/multiply' -e 'defn multiply (x y) (* x y)'
 
 # 替换整个定义（-p "" 表示根路径）
-cr tree replace 'app.core/multiply' -p "" -e 'defn multiply (x y z) (* x y z)'
+cr tree replace 'app.core/multiply' --path "" --code 'quote $ defn multiply (x y z) (* x y z)'
 
 # 更新文档和示例
 cr edit doc 'app.core/multiply' '乘法函数，返回两个数的积'
@@ -560,13 +558,13 @@ cr edit add-example 'app.core/multiply' -e 'multiply 5 6'
 
 ```bash
 # 1. 搜索定位
-cr query search '<pattern>' -f 'ns/def' -l
+cr query search '<pattern>' --filter 'ns/def'
 
 # 2. 查看节点（输出会显示索引和操作提示）
-cr tree show 'ns/def' -p "<path>"
+cr tree show 'ns/def' --path "<path>"
 
 # 3. 执行替换（会显示 diff 和验证命令）
-cr tree replace 'ns/def' -p "<path>" --leaf -e '<value>'
+cr tree replace 'ns/def' --path "<path>" --code 'quote |<value>'
 
 # 4. 检查结果
 cr query error
@@ -580,7 +578,7 @@ cr edit add-import app.main -e 'app.util :refer $ helper'
 cr edit rm-import app.main app.util
 
 # 更新项目配置
-cr edit config init-fn app.main/main!
+cr config set init-fn app.main/main!
 ```
 
 **更新命名空间导入（全量替换）：**
@@ -630,16 +628,16 @@ cr edit imports app.main -j '[["app.lib", ":as", "lib"], ["app.util", ":refer", 
 
 ```bash
 # ✅ 替换表达式
-cr tree replace app.main/fn -p "2" -e 'println |hello'
+cr tree replace app.main/fn --path "2" --code 'quote $ println |hello'
 
 # ✅ 替换 leaf（推荐 --leaf）
-cr tree replace app.main/fn -p "2,0" --leaf -e 'new-symbol'
+cr tree replace app.main/fn --path "2,0" --code 'quote new-symbol'
 
 # ✅ 替换字符串 leaf
-cr tree replace app.main/fn -p "2,1" --leaf -e '|new text'
+cr tree replace app.main/fn --path "2,1" --code 'quote |new text'
 
 # ❌ 避免：用 -e 传单个 token（会变成 list）
-cr tree replace app.main/fn -p "2,0" -e 'symbol'  # 结果：["symbol"]
+cr tree replace app.main/fn --path "2,0" --code 'quote symbol'
 ```
 
 ### 3. Cirru 字符串和数据类型 ⭐⭐
@@ -681,13 +679,13 @@ send-to-component! $ :: :clipboard/read text
 
 ```bash
 # 1. 搜索定位
-cr query search '<pattern>' -f 'ns/def' -l
+cr query search '<pattern>' --filter 'ns/def'
 
 # 2. 查看节点（会显示索引和操作提示）
-cr tree show 'ns/def' -p "<path>"
+cr tree show 'ns/def' --path "<path>"
 
 # 3. 执行修改（会显示 diff 和验证命令）
-cr tree replace 'ns/def' -p "<path>" --leaf -e '<value>'
+cr tree replace 'ns/def' --path "<path>" --code 'quote |<value>'
 
 # 4. 增量触发更新（推荐）
 cr edit inc --changed ns/def
@@ -695,7 +693,7 @@ cr edit inc --changed ns/def
 cr query error
 
 # 5. 如果结果不符合预期，使用全量编译
-cr -1 js  # 或 cr -1（解释执行模式）
+cr js  # 或 cr（解释执行模式）
 ```
 
 **批量修改提示：** 命令会自动检测多匹配场景，显示从大到小的路径排序和重要警告。

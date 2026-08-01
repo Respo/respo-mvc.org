@@ -15,8 +15,8 @@
 
 The Respo project is a virtual DOM library written in Calcit-js, containing:
 
-- **Main codebase**: `compact.cirru` (2314 lines) - serialized source code
-- **Compiled source**: `calcit.cirru` (13806 lines) - full AST representation
+- **Main codebase**: `calcit.cirru` - the single serialized Calcit source snapshot
+- **Legacy compatibility**: `compact.cirru` is not used by this project and must not be recreated
 - **Namespaces**: 33 total namespaces organized by functionality
 - **Version**: 0.16.21
 - **Dependencies**: memof (memoization), lilac (UI utilities), calcit-test (testing)
@@ -100,20 +100,20 @@ When you need to understand or modify specific parts of a definition:
 cr query def respo.app.updater/updater
 
 # Step 2: Use tree show to examine the structure (limit depth to reduce output)
-cr tree show respo.app.updater/updater -p "" -d 1    # View root level
+cr tree show respo.app.updater/updater --depth 1    # View root level
 
 # Step 3: Dive deeper into specific indices
-cr tree show respo.app.updater/updater -p "2" -d 1   # Check 3rd element
-cr tree show respo.app.updater/updater -p "2,1" -d 1 # Check 2nd child of 3rd element
+cr tree show respo.app.updater/updater --path "2" --depth 1   # Check 3rd element
+cr tree show respo.app.updater/updater --path "2,1" --depth 1 # Check 2nd child of 3rd element
 
 # Step 4: Confirm target location before editing
-cr tree show respo.app.updater/updater -p "2,1,0"    # Final confirmation
+cr tree show respo.app.updater/updater --path "2,1,0"    # Final confirmation
 
 # Step 5: Use tree commands for surgical modifications
 # JSON inline (recommended)
-cr tree replace respo.app.updater/updater -p "2,1,0" -j '"new-value"'
+cr tree replace respo.app.updater/updater --path "2,1,0" --code 'quote |new-value'
 # Or from stdin
-echo '"new-value"' | cr tree replace respo.app.updater/updater -p "2,1,0" -s -J
+printf 'quote |new-value' | cr tree replace respo.app.updater/updater --path "2,1,0" --file /dev/stdin
 ```
 
 echo '["defn", "hello", [], ["println", "|Hello"]]' | cr edit def respo.app.core/hello -s -J
@@ -174,9 +174,9 @@ cr cirru parse -O 'defn f (x) (+ x 1)'
 cr query config
 
 # Set project configuration
-cr edit config version "0.16.22"
-cr edit config init-fn "respo.main/main!"
-cr edit config reload-fn "respo.main/reload!"
+cr config version patch
+cr config set init-fn respo.main/main!
+cr config set reload-fn respo.main/reload!
 ```
 
 ### 5. Workflow: Building From Scratch
@@ -300,19 +300,19 @@ Use the **precise editing pattern** for complex changes:
 cr query def namespace/function-name
 
 # 2. Map out the structure with tree show
-cr tree show namespace/function-name -p "" -d 1
+cr tree show namespace/function-name --depth 1
 
 # 3. Navigate to target position
-cr tree show namespace/function-name -p "2,1" -d 1
+cr tree show namespace/function-name --path "2,1" --depth 1
 
 # 4. Make the change (JSON inline recommended)
-cr tree replace namespace/function-name -p "2,1,0" -j '["new", "code"]'
+cr tree replace namespace/function-name --path "2,1,0" --code 'quote $ new code'
 
 # Or from stdin (JSON format)
-echo '["new", "code"]' | cr tree replace namespace/function-name -p "2,1,0" -s -J
+printf 'quote $ new code' | cr tree replace namespace/function-name --path "2,1,0" --file /dev/stdin
 
 # 5. Verify
-cr tree show namespace/function-name -p "2,1"
+cr tree show namespace/function-name --path "2,1"
 ```
 
 ### Step 3: Test and Validate
@@ -325,10 +325,10 @@ cr --check-only
 cr js --check-only
 
 # Run the app once to test
-cr -1
+cr
 
 # Compile to JavaScript once
-cr -1 js
+cr js
 
 # Watch mode (will call reload! on code changes)
 cr
@@ -710,24 +710,24 @@ defn reload! ()
 2. **Map the exact location**
 
    ```bash
-   cr tree show namespace-name/def-name -p "" -d 2  # Overview
-   cr tree show namespace-name/def-name -p "2" -d 2  # Check section
-   cr tree show namespace-name/def-name -p "2,1" -d 2  # Precise location
+   cr tree show namespace-name/def-name --depth 2  # Overview
+   cr tree show namespace-name/def-name --path "2" --depth 2  # Check section
+   cr tree show namespace-name/def-name --path "2,1" --depth 2  # Precise location
    ```
 
 3. **Make surgical change**
 
 ```bash
 # JSON inline (recommended)
-cr tree replace namespace-name/def-name -p "2,1,0" -j '"new-value"'
+cr tree replace namespace-name/def-name --path "2,1,0" --code 'quote |new-value'
 
 # Or from stdin (JSON format)
-echo '"new-value"' | cr tree replace namespace-name/def-name -p "2,1,0" -s -J
+printf 'quote |new-value' | cr tree replace namespace-name/def-name --path "2,1,0" --file /dev/stdin
 ```
 
 4. **Verify immediately**
    ```bash
-   cr tree show namespace-name/def-name -p "2,1"  # Confirm change
+   cr tree show namespace-name/def-name --path "2,1"  # Confirm change
    cr --check-only  # Verify syntax
    ```
 
@@ -735,19 +735,19 @@ echo '"new-value"' | cr tree replace namespace-name/def-name -p "2,1,0" -s -J
 
 ```bash
 # Replace a value (JSON inline)
-cr tree replace ns/def -p "2,1,0" -j '"new-value"'
+cr tree replace ns/def --path "2,1,0" --code 'quote |new-value'
 
 # Insert before a position (JSON)
-cr tree insert-before ns/def -p "2,1" -j '["new", "element"]'
+cr tree insert-before ns/def --path "2,1" --code 'quote $ new element'
 
 # Insert after a position (JSON)
-cr tree insert-after ns/def -p "2,1" -j '["new", "element"]'
+cr tree insert-after ns/def --path "2,1" --code 'quote $ new element'
 
 # Delete a node
-cr tree delete ns/def -p "2,1,0"
+cr tree delete ns/def --path "2,1,0"
 
 # Insert as child (first child)
-cr tree insert-child ns/def -p "2,1" -j '"child-value"'
+cr tree insert-child ns/def --path "2,1" --code 'quote |child-value'
 
 # Append as child (last child, from stdin)
 echo '"child-value"' | cr tree append-child ns/def -p "2,1" -s -J
@@ -767,10 +767,10 @@ cr --check-only
 cr js --check-only
 
 # Run application once
-cr -1
+cr
 
 # Compile to JS once
-cr -1 js
+cr js
 ```
 
 ### Test-driven development
@@ -781,7 +781,7 @@ cr query defs respo.test.main
 cr query def respo.test.main/test-fn
 
 # Run tests
-cr -1  ; (if init-fn runs tests)
+cr  ; (if init-fn runs tests)
 ```
 
 ### Error diagnosis
@@ -807,7 +807,7 @@ cr query ns namespace-name  # Check imports
 
 ### ⚠️ Critical Rules
 
-1. **NEVER directly edit `calcit.cirru` or `compact.cirru`** with text editors
+1. **NEVER directly edit `calcit.cirru`** with text editors
 
    - Use `cr edit` commands instead
    - These are serialized AST structures, not human-readable code
@@ -826,9 +826,9 @@ cr query ns namespace-name  # Check imports
 4. **ALWAYS verify modifications work**
 
    ```bash
-   cr tree show namespace/def -p "modified-path"  # Confirm change
+   cr tree show namespace/def --path "modified-path"  # Confirm change
    cr --check-only  # Check syntax
-   cr -1  # Test run
+   cr  # Test run
    ```
 
 5. **Use peek before def** to reduce token consumption
@@ -848,9 +848,9 @@ cr query defs respo.app.updater               # Quick list
 cr query def respo.app.updater/updater        # Full JSON AST
 
 # Use -d flag to limit JSON depth
-cr tree show ns/def -p "2,1" -d 1            # Shallow
-cr tree show ns/def -p "2,1" -d 3            # Medium
-cr tree show ns/def -p "2,1"                 # Full (default)
+cr tree show ns/def --path "2,1" --depth 1   # Shallow
+cr tree show ns/def --path "2,1" --depth 3   # Medium
+cr tree show ns/def --path "2,1"             # Full (default)
 
 # Search before diving deep
 cr query find my-function                     # Find location first
@@ -886,19 +886,19 @@ cr query find render!                    # Search globally
 cr query usages respo.core/render!       # Find usages
 
 # Navigation (precise editing)
-cr tree show ns/def -p "" -d 1           # View structure
-cr tree show ns/def -p "2,1" -d 1        # Drill down
-cr tree show ns/def -p "2,1,0"           # Confirm target
+cr tree show ns/def --depth 1             # View structure
+cr tree show ns/def --path "2,1" --depth 1  # Drill down
+cr tree show ns/def --path "2,1,0"       # Confirm target
 
 # Modification (careful!)
 cr edit def ns/def -j '["defn", "func", [], "body"]'
-cr tree replace ns/def -p "2,1,0" -j '"value"'
+cr tree replace ns/def --path "2,1,0" --code 'quote |value'
 cr edit rm-def ns/def
 
 # Validation
 cr --check-only                          # Check syntax
 cr query error                           # View errors
-cr -1                                    # Test run
+cr                                      # Test run
 ```
 
 ### File Paths in Documentation
