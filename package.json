@@ -1,7 +1,8 @@
 {
   "dependencies": {
     "@calcit/procs": "^0.13.19",
-    "cirru-color": "^0.2.4"
+    "cirru-color": "^0.2.4",
+    "dayjs": "^1.11.11"
   },
   "devDependencies": {
     "bottom-tip": "^0.1.5",
