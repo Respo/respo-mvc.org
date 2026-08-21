@@ -510,7 +510,7 @@
                 exists? js/window
                 , false
               (exists? js/process) (= |true js/process.env.cdn)
-              :else false
+              true false
           :examples $ []
           :schema $ :: 'Dynamic
         |dev? $ %{} 'CodeEntry (:doc |)
