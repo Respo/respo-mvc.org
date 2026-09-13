@@ -636,8 +636,7 @@
           :code $ quote $ defn repeat! (duration cb)
             do
               js/setTimeout
-                fn () (cb)
-                  repeat! (* 1000 duration) cb
+                fn () (cb) (repeat! duration cb)
                 * 1000 duration
               , &unit
           :examples $ []
