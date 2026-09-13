@@ -1,7 +1,10 @@
 
-{} (:about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --full` first. Manual edits must follow format and schema conventions, then run `calcit edit format`.") (:package |app)
-  :entries $ {}
-    :default $ {} (:description |) (:init-fn 'app.main/main!) (:mode :native) (:reload-fn 'app.main/reload!)
+{}
+  :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
+  :package |app
+  :entries $ {} $ :default
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :native)
+      :reload-fn 'app.main/reload!
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {}
@@ -9,175 +12,173 @@
     'app.comp.container $ %{} 'FileEntry
       :defs $ {}
         'comp-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-container (reel)
-              let
-                  store $ option:unwrap-or (get reel :store) ({})
-                  states $ option:unwrap-or (get store :states) ({})
-                  cursor $ option:unwrap-or (get states :cursor) ([])
-                  state $ option:unwrap-or (get states :data)
-                    {} $ :content |
-                  content-data $ parse-cirru-edn (include-file! |./docs/content.cirru)
+          :code $ quote $ defcomp comp-container (reel)
+            let
+                store $ option:unwrap-or (get reel :store) ({})
+                states $ option:unwrap-or (get store :states) ({})
+                cursor $ option:unwrap-or (get states :cursor) ([])
+                state $ option:unwrap-or (get states :data)
+                  {} $ :content |
+                content-data $ parse-cirru-edn $ include-file! |./docs/content.cirru
+              div
+                {} $ :class-name css/global
+                comp-header
+                comp-visual
                 div
-                  {} $ :class-name css/global
-                  comp-header
-                  comp-visual
-                  div
-                    {} $ :class-name style-main-container
-                    comp-features
-                    list-> ({})
-                      -> content-data $ map-indexed
-                        fn (idx item)
-                          [] idx $ render-item item
-                  comp-footer
+                  {} $ :class-name style-main-container
+                  comp-features
+                  list-> ({})
+                    ->
+                      assert-type content-data $ :: 'List 'Dynamic
+                      map-indexed $ fn (idx item)
+                        [] idx $ render-item item
+                comp-footer
           :examples $ []
           :schema $ :: 'Dynamic
         'comp-footer $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-footer () $ div
+          :code $ quote $ defcomp comp-footer ()
+            div
               {} $ :class-name style-footer
               comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
-              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community
+              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ %none
           :examples $ []
           :schema $ :: 'Dynamic
         'hacky-wrap-code $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn hacky-wrap-code (code)
-              let
-                  v $ .-value code
-                set! (.-value code) (js-array v)
-                , code
+          :code $ quote $ defn hacky-wrap-code (code)
+            let
+                v $ .-value code
+              set! (.-value code) (js-array v)
+              , code
           :examples $ []
-          :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ [] 'Dynamic
-              :features $ #{} :js-ffi
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic
+            :features $ #{} :js-ffi
         'include-file! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defmacro include-file! (path)
-              read-file $ unsafe-coerce path 'String
+          :code $ quote $ defmacro include-file! (path)
+            read-file $ unsafe-coerce path 'String
           :examples $ []
-          :schema $ :: 'Macro
-            {}
-              :capabilities $ #{} :fs-read
-              :expansion $ :: 'Expr 'String
-              :required $ [] 'Syntax
+          :schema $ :: 'Macro $ {}
+            :capabilities $ #{} :fs-read
+            :expansion $ :: 'Expr 'String
+            :features $ #{} :js-ffi
+            :required $ [] 'Syntax
         'render-item $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn render-item (item)
-              match item
-                (:text t)
+          :code $ quote $ defn render-item (item)
+            match item
+              (:text t)
+                div
+                  {} $ :style $ {} (:line-height |1.4)
+                  comp-md t $ {}
+              (:title t)
+                div
+                  {} $ :class-name style-title
+                  <> t
+              (:pair l r)
+                div
+                  {} $ :class-name style-pair-container
                   div
-                    {} $ :style
-                      {} $ :line-height |1.4
-                    comp-md t
-                (:title t)
+                    {} $ :class-name style-pair-left
+                    render-item l
                   div
-                    {} $ :class-name style-title
-                    <> t
-                (:pair l r)
-                  div
-                    {} $ :class-name style-pair-container
-                    div
-                      {} $ :class-name style-pair-left
-                      render-item l
-                    div
-                      {} $ :class-name style-pair-right
-                      render-item r
-                (:cards xs)
-                  list->
-                    {} $ :class-name style-card-grid
-                    -> xs $ map-indexed
-                      fn (idx x)
-                        [] idx $ render-item x
-                (:list xs)
-                  list-> ({})
-                    -> xs $ map-indexed
-                      fn (idx x)
-                        [] idx $ render-item x
-                (:snippet code)
+                    {} $ :class-name style-pair-right
+                    render-item r
+              (:cards xs)
+                list->
+                  {} $ :class-name style-card-grid
+                  ->
+                    assert-type xs $ :: 'List 'Dynamic
+                    map-indexed $ fn (idx x)
+                      [] idx $ render-item x
+              (:list xs)
+                list-> ({})
+                  ->
+                    assert-type xs $ :: 'List 'Dynamic
+                    map-indexed $ fn (idx x)
+                      [] idx $ render-item x
+              (:snippet code)
+                comp-cirru-snippet
+                  trim $ format-cirru $ hacky-wrap-code code
+                  %some $ %{} ui-schema/PresentationOptions
+                    :class-name $ %some $ str-spaced style-code-block style-syntax-theme
+                    :style $ %none
+              (:tiny-snippet code)
+                div
+                  {} $ :class-name style-tiny-snippet-container
                   comp-cirru-snippet
-                    .trim $ format-cirru (hacky-wrap-code code)
-                    {} $ :class-name (str-spaced style-code-block style-syntax-theme)
-                (:tiny-snippet code)
-                  div
-                    {} $ :class-name style-tiny-snippet-container
-                    comp-cirru-snippet
-                      .trim $ format-cirru (hacky-wrap-code code)
-                      {} (:border :none) (:class-name style-syntax-theme)
-                (:link name url desc)
-                  div
-                    {} $ :class-name style-link-card
-                    div ({})
-                      div
-                        {} $ :style
-                          {} $ :margin-bottom 8
-                        a $ {} (:class-name style-card-title) (:href url) (:inner-text name) (:target |_blank)
-                      if (some? desc) (<> desc style-desc)
-                _ $ div ({})
-                  <> $ str (nth item 0)
+                    trim $ format-cirru $ hacky-wrap-code code
+                    %some $ %{} ui-schema/PresentationOptions
+                      :class-name $ %some style-syntax-theme
+                      :style $ %some $ {} (:border :none)
+              (:link name url desc)
+                div
+                  {} $ :class-name style-link-card
+                  div ({})
+                    div
+                      {} $ :style $ {} (:margin-bottom 8)
+                      a $ {} (:class-name style-card-title) (:href url) (:inner-text name) (:target |_blank)
+                    if (some? desc) (<> desc style-desc)
+              _ $ div ({})
+                <> $ to-lispy-string $ nth item 0
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic
         'style-card-grid $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-card-grid $ {}
-              |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
+          :code $ quote $ defstyle style-card-grid
+            {} $ |& $ {} (:display :grid) (:gap |24px)
+              :grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))"
+              :margin "|24px 0 40px"
           :examples $ []
           :schema $ :: 'Dynamic
         'style-card-title $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-card-title $ {}
+          :code $ quote $ defstyle style-card-title
+            {}
               |& $ {}
                 :color $ hsl 0 0 20
                 :font-weight 600
                 :text-decoration :none
                 :font-size 16
                 :transition "|color 0.2s"
-              |&:hover $ {} (:color brand-color)
+              |&:hover $ {} $ :color brand-color
           :examples $ []
           :schema $ :: 'Dynamic
         'style-code-block $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-code-block $ {}
-              |& $ {}
-                :background-color $ hsl 220 14 96
-                :color $ hsl 220 10 20
-                :border-radius |8px
-                :padding |20px
-                :border $ str "|1px solid " (hsl 220 14 93)
-                :font-family "|Menlo, Monaco, Consolas, monospace"
-                :font-size 13
-                :line-height |1.5
-                :overflow :auto
-                :margin-bottom 16
+          :code $ quote $ defstyle style-code-block
+            {} $ |& $ {}
+              :background-color $ hsl 220 14 96
+              :color $ hsl 220 10 20
+              :border-radius |8px
+              :padding |20px
+              :border $ str "|1px solid " $ hsl 220 14 93
+              :font-family "|Menlo, Monaco, Consolas, monospace"
+              :font-size 13
+              :line-height |1.5
+              :overflow :auto
+              :margin-bottom 16
           :examples $ []
           :schema $ :: 'Dynamic
         'style-desc $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-desc $ {}
-              |& $ {}
-                :color $ hsl 0 0 40
+          :code $ quote $ defstyle style-desc
+            {} $ |& $ {}
+              :color $ hsl 0 0 40
           :examples $ []
           :schema $ :: 'Dynamic
         'style-footer $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-footer $ {}
-              |& $ {} (:max-width 1200) (:margin :auto) (:font-size 14) (:padding "|40px 20px") (:text-align :center)
-                :color $ hsl 0 0 60
-                :border-top $ str "|1px solid " (hsl 0 0 96)
+          :code $ quote $ defstyle style-footer
+            {} $ |& $ {} (:max-width 1200) (:margin :auto) (:font-size 14) (:padding "|40px 20px") (:text-align :center)
+              :color $ hsl 0 0 60
+              :border-top $ str "|1px solid " $ hsl 0 0 96
           :examples $ []
           :schema $ :: 'Dynamic
         'style-hero-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-hero-container $ {}
-              |& $ {} (:width |100%)
+          :code $ quote $ defstyle style-hero-container
+            {} $ |& $ {} (:width |100%)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-link-card $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-link-card $ {}
+          :code $ quote $ defstyle style-link-card
+            {}
               |& $ {} (:border-radius |12px) (:padding "|20px 24px")
-                :border $ str "|1px solid " (hsl 0 0 92)
+                :border $ str "|1px solid " $ hsl 0 0 92
                 :background-color :white
                 :transition "|all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)"
                 :box-shadow "|0 4px 12px rgba(0,0,0,0.03)"
@@ -185,26 +186,28 @@
                 :display :flex
                 :flex-direction :column
                 :justify-content :center
-              |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 12px 24px rgba(0,0,0,0.08)") (:border-color brand-color)
+              |&:hover $ {}
+                :transform "|translateY(-4px)"
+                :box-shadow "|0 12px 24px rgba(0,0,0,0.08)"
+                :border-color brand-color
           :examples $ []
           :schema $ :: 'Dynamic
         'style-main-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-main-container $ {}
+          :code $ quote $ defstyle style-main-container
+            {}
               |& $ {} (:max-width 1200) (:margin :auto) (:font-size 16) (:padding "|0 40px")
-              "|@media (max-width: 720px)" $ {}
-                |& $ {} (:padding "|0 16px")
+              "|@media (max-width: 720px)" $ {} $ |&
+                {} $ :padding "|0 16px"
           :examples $ []
           :schema $ :: 'Dynamic
         'style-pair-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-pair-container $ {}
-              |& $ {} (:display :flex) (:flex-wrap :wrap) (:gap |32px) (:margin-bottom |64px) (:align-items :flex-start)
+          :code $ quote $ defstyle style-pair-container
+            {} $ |& $ {} (:display :flex) (:flex-wrap :wrap) (:gap |32px) (:margin-bottom |64px) (:align-items :flex-start)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-pair-left $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-pair-left $ {}
+          :code $ quote $ defstyle style-pair-left
+            {}
               |& $ {} (:flex 1) (:min-width |280px) (:max-width |400px)
               "|& > div" $ {} (:display :flex) (:flex-direction :column) (:gap |16px)
               "|& > div > div:first-child" $ {} (:font-weight 600) (:font-size 18)
@@ -212,52 +215,45 @@
           :examples $ []
           :schema $ :: 'Dynamic
         'style-pair-right $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-pair-right $ {}
-              |& $ {} (:flex 2) (:min-width |320px) (:overflow :hidden)
+          :code $ quote $ defstyle style-pair-right
+            {} $ |& $ {} (:flex 2) (:min-width |320px) (:overflow :hidden)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-syntax-theme $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-syntax-theme $ {}
-              "|& .string" $ {}
-                :color $ hsl 130 60 45
-              "|& .number" $ {}
-                :color $ hsl 30 100 45
-              "|& .keyword" $ {}
-                :color $ hsl 300 80 45
-              "|& .symbol" $ {}
-                :color $ hsl 210 80 55
+          :code $ quote $ defstyle style-syntax-theme
+            {}
+              "|& .string" $ {} $ :color (hsl 130 60 45)
+              "|& .number" $ {} $ :color (hsl 30 100 45)
+              "|& .keyword" $ {} $ :color (hsl 300 80 45)
+              "|& .symbol" $ {} $ :color (hsl 210 80 55)
               "|& .ex" $ {}
                 :color $ hsl 210 80 55
                 :font-weight :bold
           :examples $ []
           :schema $ :: 'Dynamic
         'style-tiny-snippet-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-tiny-snippet-container $ {}
-              |& $ {}
-                :background-color $ hsl 0 0 97
-                :color $ hsl 220 10 20
-                :border-radius |6px
-                :padding "|8px 12px"
-                :border $ str "|1px solid " (hsl 0 0 92)
-                :font-family :monospace
-                :font-size 13
-                :width :fit-content
+          :code $ quote $ defstyle style-tiny-snippet-container
+            {} $ |& $ {}
+              :background-color $ hsl 0 0 97
+              :color $ hsl 220 10 20
+              :border-radius |6px
+              :padding "|8px 12px"
+              :border $ str "|1px solid " $ hsl 0 0 92
+              :font-family :monospace
+              :font-size 13
+              :width :fit-content
           :examples $ []
           :schema $ :: 'Dynamic
         'style-title $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-title $ {}
-              |& $ {} (:font-size 24) (:font-weight 600) (:margin "|48px 0 16px")
-                :color $ hsl 0 0 20
-                :font-family "|Josefin Sans, sans-serif"
+          :code $ quote $ defstyle style-title
+            {} $ |& $ {} (:font-size 24) (:font-weight 600) (:margin "|48px 0 16px")
+              :color $ hsl 0 0 20
+              :font-family "|Josefin Sans, sans-serif"
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.comp.container $ :require (respo-ui.core :as ui)
+        :code $ quote $ ns app.comp.container
+          :require (respo-ui.core :as ui)
             respo.css :refer $ defstyle
             respo-ui.css :as css
             respo.util.format :refer $ hsl
@@ -269,37 +265,48 @@
             respo-ui.comp :refer $ comp-cirru-snippet
             app.config :refer $ dev? brand-color
             app.comp.header :refer $ comp-header
+            respo-ui.schema :as ui-schema
     'app.comp.header $ %{} 'FileEntry
       :defs $ {}
         'comp-header $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-header () $ div
+          :code $ quote $ defcomp comp-header ()
+            div
               {} $ :class-name style-header
               div
-                {} $ :style
-                  {} (:font-family ui/font-fancy) (:font-weight 300) (:font-size 20)
+                {} $ :style $ {} (:font-family ui/font-fancy) (:font-weight 300) (:font-size 20)
                 <> |Respo
               div ({})
-                a $ {} (:href |https://github.com/Respo/respo-examples) (:target |_blank) (:class-name style-link) (:inner-text |Examples)
-                a $ {} (:href |https://github.com/Respo/respo.calcit/wiki/API) (:target |_blank) (:class-name style-link) (:inner-text |APIs)
-                a $ {} (:href |https://github.com/Respo) (:target |_blank) (:class-name style-link) (:inner-text |GitHub)
+                a $ {}
+                  :href |https://github.com/Respo/respo-examples
+                  :target |_blank
+                  :class-name style-link
+                  :inner-text |Examples
+                a $ {}
+                  :href |https://github.com/Respo/respo.calcit/wiki/API
+                  :target |_blank
+                  :class-name style-link
+                  :inner-text |APIs
+                a $ {}
+                  :href |https://github.com/Respo
+                  :target |_blank
+                  :class-name style-link
+                  :inner-text |GitHub
           :examples $ []
           :schema $ :: 'Dynamic
         'style-header $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-header $ {}
-              |& $ {} (:height 60) (:width |100%) (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "|0 16px")
-                :border-bottom $ str "|1px solid " (hsl 0 0 94)
-                :background-color $ hsl 0 0 100 0.8
-                :backdrop-filter "|blur(8px)"
-                :position :sticky
-                :top 0
-                :z-index |999
+          :code $ quote $ defstyle style-header
+            {} $ |& $ {} (:height 60) (:width |100%) (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "|0 16px")
+              :border-bottom $ str "|1px solid " $ hsl 0 0 94
+              :background-color $ hsl 0 0 100 0.8
+              :backdrop-filter "|blur(8px)"
+              :position :sticky
+              :top 0
+              :z-index |999
           :examples $ []
           :schema $ :: 'Dynamic
         'style-link $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-link $ {}
+          :code $ quote $ defstyle style-link
+            {}
               |& $ {} (:margin-left 16)
                 :color $ hsl 0 0 40
                 :text-decoration :none
@@ -307,13 +314,12 @@
                 :font-size 14
                 :cursor :pointer
                 :transition-duration |200ms
-              |&:hover $ {}
-                :color $ hsl 200 80 60
+              |&:hover $ {} $ :color (hsl 200 80 60)
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.comp.header $ :require
+        :code $ quote $ ns app.comp.header
+          :require
             respo.core :refer $ defcomp div span a button img <>
             respo.css :refer $ defstyle
             respo-ui.core :as ui
@@ -322,8 +328,8 @@
     'app.comp.home $ %{} 'FileEntry
       :defs $ {}
         'comp-features $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-features () $ div
+          :code $ quote $ defcomp comp-features ()
+            div
               {} $ :class-name app.comp.container/style-card-grid
               render-feature "|Virtual DOM" "|Lightweight and fast virtual DOM implementation."
               render-feature "|Calcit Syntax" "|Write React-like apps in indentation-based Lisp."
@@ -332,109 +338,117 @@
           :examples $ []
           :schema $ :: 'Dynamic
         'comp-visual $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defcomp comp-visual () $ div
+          :code $ quote $ defcomp comp-visual ()
+            div
               {}
                 :class-name $ str-spaced css/column style-hero
                 :style $ {} (:align-items :center) (:gap |32px)
-              div $ {} (:class-name style-logo)
+              div $ {} $ :class-name style-logo
               div ({})
                 div $ {}
                   :class-name $ str-spaced style-branch-name style-R
                   :inner-text |R
-                  :style $ {} (:font-size 64)
+                  :style $ {} $ :font-size 64
                 <> |espo style-branch-name
               div
                 {} $ :style style-description
                 <> "|Virtual DOM library on Calcit immutable data." nil
               div
                 {} (:class-name css/row)
-                  :style $ {} (:gap |8px)
+                  :style $ {} $ :gap |8px
                 a
-                  {} (:href |http://guide.respo-mvc.org/) (:target |_blank)
+                  {}
+                    :href |http://guide.respo-mvc.org/
+                    :target |_blank
                   button $ {} (:inner-text |Guide)
                     :class-name $ str-spaced css/button-primary style-larger-button
                 a
-                  {} (:href |https://respo-mvc.org/Agents.md) (:target |_blank)
+                  {}
+                    :href |https://respo-mvc.org/Agents.md
+                    :target |_blank
                   button $ {} (:inner-text |Agents)
                     :class-name $ str-spaced css/button style-larger-button
                 span ({})
                   img $ {}
-                    :style $ {} (:vertical-align :middle)
+                    :style $ {} $ :vertical-align :middle
                     :src |https://img.shields.io/github/v/release/Respo/respo.calcit
           :examples $ []
           :schema $ :: 'Dynamic
         'render-feature $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn render-feature (title desc)
-              div
-                {} $ :class-name style-feature-card
-                div $ {} (:inner-text title) (:class-name style-feature-title)
-                div $ {} (:inner-text desc) (:class-name style-feature-desc)
+          :code $ quote $ defn render-feature (title desc)
+            div
+              {} $ :class-name style-feature-card
+              div $ {} (:inner-text title)
+                :class-name style-feature-title
+              div $ {} (:inner-text desc)
+                :class-name style-feature-desc
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic 'Dynamic
         'render-link $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn render-link (text path ? target)
-              div
-                {} $ :style style-section
-                a
-                  {}
-                    :href $ str path
-                    :target $ either target |_self
-                  button $ {} (:inner-text text)
-                    :class-name $ str-spaced css/button style-ghost-button
+          :code $ quote $ defn render-link (text path target)
+            div
+              {} $ :style style-section
+              a
+                {}
+                  :href $ str path
+                  :target $ option:unwrap-or target |_self
+                button $ {} (:inner-text text)
+                  :class-name $ str-spaced css/button style-ghost-button
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'String 'String $ :: 'Option 'String
         'style-R $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-R $ {}
-              |& $ {} (:color |#cd372d) (:transition-duration |400ms) (:display :inline-block)
-              |div:hover>& $ {} (:transform "|rotate(180deg) scale(1,-1)")
+          :code $ quote $ defstyle style-R
+            {}
+              |& $ {} (:color |#cd372d)
+                :transition-duration |400ms
+                :display :inline-block
+              |div:hover>& $ {} $ :transform "|rotate(180deg) scale(1,-1)"
           :examples $ []
           :schema $ :: 'Dynamic
         'style-branch-name $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-branch-name $ {}
-              |& $ {} (:font-size 48) (:font-family ui/font-fancy) (:line-height |1.2) (:font-weight 300)
+          :code $ quote $ defstyle style-branch-name
+            {} $ |& $ {} (:font-size 48) (:font-family ui/font-fancy) (:line-height |1.2) (:font-weight 300)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-description $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def style-description $ {}
-              |& $ {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
-                :color $ hsl 0 0 33
-                :font-family |Hind
+          :code $ quote $ def style-description
+            {} $ |& $ {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
+              :color $ hsl 0 0 33
+              :font-family |Hind
           :examples $ []
           :schema $ :: 'Dynamic
         'style-feature-card $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-feature-card $ {}
-              |& $ {} (:padding |24px) (:background :white) (:border-radius |12px) (:box-shadow "|0 2px 8px rgba(0,0,0,0.05)")
-                :border $ str "|1px solid " (hsl 0 0 96)
+          :code $ quote $ defstyle style-feature-card
+            {}
+              |& $ {} (:padding |24px) (:background :white) (:border-radius |12px)
+                :box-shadow "|0 2px 8px rgba(0,0,0,0.05)"
+                :border $ str "|1px solid " $ hsl 0 0 96
                 :transition "|all 0.3s"
-              |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.1)") (:border-color brand-color)
+              |&:hover $ {}
+                :transform "|translateY(-4px)"
+                :box-shadow "|0 8px 16px rgba(0,0,0,0.1)"
+                :border-color brand-color
           :examples $ []
           :schema $ :: 'Dynamic
         'style-feature-desc $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-feature-desc $ {}
-              |& $ {} (:font-size 14) (:line-height |1.6)
-                :color $ hsl 0 0 40
+          :code $ quote $ defstyle style-feature-desc
+            {} $ |& $ {} (:font-size 14) (:line-height |1.6)
+              :color $ hsl 0 0 40
           :examples $ []
           :schema $ :: 'Dynamic
         'style-feature-title $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-feature-title $ {}
-              |& $ {} (:font-size 18) (:font-weight 600) (:margin-bottom |8px)
-                :color $ hsl 0 0 20
+          :code $ quote $ defstyle style-feature-title
+            {} $ |& $ {} (:font-size 18) (:font-weight 600) (:margin-bottom |8px)
+              :color $ hsl 0 0 20
           :examples $ []
           :schema $ :: 'Dynamic
         'style-ghost-button $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-ghost-button $ {}
+          :code $ quote $ defstyle style-ghost-button
+            {}
               |& $ {} (:background :transparent)
-                :border $ str "|1px solid " (hsl 0 0 80)
+                :border $ str "|1px solid " $ hsl 0 0 80
                 :color $ hsl 0 0 40
                 :border-radius |24px
                 :line-height |38px
@@ -448,50 +462,58 @@
           :examples $ []
           :schema $ :: 'Dynamic
         'style-github $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def style-github $ {} (:text-decoration :none)
+          :code $ quote $ def style-github
+            {} $ :text-decoration :none
           :examples $ []
           :schema $ :: 'Dynamic
         'style-hero $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-hero $ {}
-              |& $ {} (:padding "|80px 20px")
-                :background $ str "|linear-gradient(180deg, " (hsl 0 0 98) "|\\\", \\\"\"" (hsl 0 0 100) "|\\\")\\\"\""
-                :border-bottom $ str "|1px solid " (hsl 0 0 94)
-                :margin-bottom |40px
+          :code $ quote $ defstyle style-hero
+            {} $ |& $ {} (:padding "|80px 20px")
+              :background $ str "|linear-gradient(180deg, " (hsl 0 0 98) "|\\\", \\\"\"" (hsl 0 0 100) "|\\\")\\\"\""
+              :border-bottom $ str "|1px solid " $ hsl 0 0 94
+              :margin-bottom |40px
           :examples $ []
           :schema $ :: 'Dynamic
         'style-larger-button $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-larger-button $ {}
-              |& $ {} (:border-radius |24px) (:line-height |40px) (:padding "|0 32px") (:transition-duration |200ms) (:font-size 16) (:font-weight 600) (:box-shadow "|0 4px 12px rgba(0,0,0,0.15)") (:letter-spacing |0.5px) (:border :none) (:cursor :pointer)
-              |&:hover $ {} (:transform "|translateY(-2px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.2)")
-              |&:active $ {} (:transform "|translateY(0)") (:box-shadow "|0 2px 6px rgba(0,0,0,0.1)")
+          :code $ quote $ defstyle style-larger-button
+            {}
+              |& $ {} (:border-radius |24px) (:line-height |40px) (:padding "|0 32px")
+                :transition-duration |200ms
+                :font-size 16
+                :font-weight 600
+                :box-shadow "|0 4px 12px rgba(0,0,0,0.15)"
+                :letter-spacing |0.5px
+                :border :none
+                :cursor :pointer
+              |&:hover $ {}
+                :transform "|translateY(-2px)"
+                :box-shadow "|0 8px 16px rgba(0,0,0,0.2)"
+              |&:active $ {} (:transform "|translateY(0)")
+                :box-shadow "|0 2px 6px rgba(0,0,0,0.1)"
           :examples $ []
           :schema $ :: 'Dynamic
         'style-link $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def style-link $ {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
+          :code $ quote $ def style-link
+            {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-logo $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defstyle style-logo $ {}
-              |& $ {} (:width 160) (:height 160)
-                :background-image $ str "|url(https://cos-sh.tiye.me/cos-up/bb4c2755050318e864b56f59145d726e-SubstractRespo.png)"
-                :background-size :cover
-                :display :inline-block
-                :vertical-align :middle
+          :code $ quote $ defstyle style-logo
+            {} $ |& $ {} (:width 160) (:height 160)
+              :background-image $ str "|url(https://cos-sh.tiye.me/cos-up/bb4c2755050318e864b56f59145d726e-SubstractRespo.png)"
+              :background-size :cover
+              :display :inline-block
+              :vertical-align :middle
           :examples $ []
           :schema $ :: 'Dynamic
         'style-section $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def style-section $ {} (:display :inline-block) (:margin-right 12)
+          :code $ quote $ def style-section
+            {} (:display :inline-block) (:margin-right 12)
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.comp.home $ :require
+        :code $ quote $ ns app.comp.home
+          :require
             respo.util.format :refer $ hsl
             respo-ui.core :as ui
             respo-ui.css :as css
@@ -505,121 +527,137 @@
     'app.config $ %{} 'FileEntry
       :defs $ {}
         'brand-color $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def brand-color $ hsl 6 80 50
+          :code $ quote $ def brand-color (hsl 6 80 50)
           :examples $ []
           :schema $ :: 'Dynamic
         'cdn? $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def cdn? $ cond
+          :code $ quote $ def cdn?
+            cond
                 exists? js/window
                 , false
-              (exists? js/process) (= |true js/process.env.cdn)
+              (exists? js/process)
+                = |true js/process.env.cdn
               true false
           :examples $ []
           :schema $ :: 'Dynamic
         'dev? $ %{} 'CodeEntry (:doc |)
-          :code $ quote (def dev? true)
+          :code $ quote $ def dev? true
           :examples $ []
           :schema $ :: 'Dynamic
         'site $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def site $ {} (:dev-ui |http://localhost:8100/main-fonts.css) (:release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css) (:cdn-url |http://cdn.tiye.me/calcit-workflow/) (:title |Calcit) (:icon |http://cdn.tiye.me/logo/mvc-works.png) (:storage-key |workflow)
+          :code $ quote $ def site
+            {}
+              :dev-ui |http://localhost:8100/main-fonts.css
+              :release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css
+              :cdn-url |http://cdn.tiye.me/calcit-workflow/
+              :title |Calcit
+              :icon |http://cdn.tiye.me/logo/mvc-works.png
+              :storage-key |workflow
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.config $ :require
-            respo.util.format :refer $ hsl
+        :code $ quote $ ns app.config
+          :require $ respo.util.format :refer $ hsl
     'app.main $ %{} 'FileEntry
       :defs $ {}
         '*reel $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defatom *reel $ -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
+          :code $ quote $ defatom *reel
+            -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Ref 'Dynamic
         'dispatch! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn dispatch! (op)
-              when
-                and config/dev? $ not=
-                  option:unwrap-or (first op) :unknown
-                  , :states
-                js/console.log |Dispatch: op
-              reset! *reel $ reel-updater updater @*reel op
+          :code $ quote $ defn dispatch! (op)
+            when
+              and config/dev? $ not=
+                option:unwrap-or (first op) :unknown
+                , :states
+              js/console.log |Dispatch: op
+            reset! *reel $ reel-updater updater @*reel op
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Dynamic
+            :features $ #{} :js-ffi
         'main! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn main! ()
-              println "|Running mode:" $ if config/dev? |dev |release
-              if config/dev? $ load-console-formatter!
-              if ssr? $ render-app! realize-ssr!
-              render-app! render!
-              add-watch *reel :changes $ fn (reel prev) (render-app! render!)
-              listen-devtools! |a dispatch!
-              js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
-              repeat! 60 persist-storage!
-              let
-                  raw $ js/localStorage.getItem (:storage-key config/site)
-                when (js-present? raw)
-                  dispatch! $ :: :hydrate-storage
-                    parse-cirru-edn $ unsafe-coerce raw String
-              println "|App started."
+          :code $ quote $ defn main! ()
+            println "|Running mode:" $ if config/dev? |dev |release
+            if config/dev? $ load-console-formatter!
+            if ssr? $ render-app! realize-ssr!
+            render-app! render!
+            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
+            listen-devtools! |a dispatch!
+            js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
+            repeat! 60 persist-storage!
+            let
+                raw $ js/localStorage.getItem $ :storage-key config/site
+              when (js-present? raw)
+                dispatch! $ :: :hydrate-storage $ parse-cirru-edn (unsafe-coerce raw String)
+            println "|App started."
           :examples $ []
-          :schema $ :: 'Fn
-            {} (:return 'Dynamic)
-              :args $ []
-              :features $ #{} :js-ffi
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def mount-target $ js/document.querySelector |.app
+          :code $ quote $ def mount-target
+            js/document.querySelector |.app
           :examples $ []
           :schema $ :: 'Dynamic
         'persist-storage! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn persist-storage! () $ js/localStorage.setItem (:storage-key config/site)
-              format-cirru-edn $ :store @*reel
+          :code $ quote $ defn persist-storage! ()
+            do
+              js/localStorage.setItem (:storage-key config/site)
+                format-cirru-edn $ :store @*reel
+              , &unit
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
+            :features $ #{} :js-ffi
         'reload! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn reload! () $ if (nil? build-errors)
+          :code $ quote $ defn reload! ()
+            if (nil? build-errors)
               do (remove-watch *reel :changes) (clear-cache!)
                 add-watch *reel :changes $ fn (reel prev) (render-app! render!)
                 reset! *reel $ refresh-reel @*reel schema/store updater
                 hud! |ok~ |Ok
               hud! |error build-errors
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
         'render-app! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn render-app! (renderer)
-              renderer mount-target (comp-container @*reel) dispatch!
+          :code $ quote $ defn render-app! (renderer)
+            renderer
+              js/document.querySelector |.app
+              comp-container @*reel
+              , dispatch!
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic
+            :features $ #{} :js-ffi
         'repeat! $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn repeat! (duration cb)
+          :code $ quote $ defn repeat! (duration cb)
+            do
               js/setTimeout
-                fn () (cb)
-                  repeat! (* 1000 duration) cb
+                fn () (cb) (repeat! duration cb)
                 * 1000 duration
+              , &unit
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ [] 'Number $ :: 'Fn
+              {} (:return 'Unit)
+                :args $ []
+            :features $ #{} :js-ffi
         'snippets $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn snippets () $ println config/cdn?
+          :code $ quote $ defn snippets () (println config/cdn?)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Unit)
+            :args $ []
         'ssr? $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def ssr? $ js-present? (js/document.querySelector |meta.respo-ssr)
+          :code $ quote $ def ssr?
+            js-present? $ js/document.querySelector |meta.respo-ssr
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.main $ :require
+        :code $ quote $ ns app.main
+          :require
             respo.core :refer $ render! clear-cache! realize-ssr!
             app.comp.container :refer $ comp-container
             app.updater :refer $ updater
@@ -631,42 +669,38 @@
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
     'app.resource $ %{} 'FileEntry
-      :defs $ {}
-        'inline $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defmacro inline (path)
-              read-file $ unsafe-coerce path 'String
+      :defs $ {} $ 'inline
+        %{} 'CodeEntry (:doc |)
+          :code $ quote $ defmacro inline (path)
+            read-file $ unsafe-coerce path 'String
           :examples $ []
-          :schema $ :: 'Macro
-            {}
-              :capabilities $ #{} :fs-read
-              :expansion $ :: 'Expr 'String
-              :required $ [] 'Syntax
+          :schema $ :: 'Macro $ {}
+            :capabilities $ #{} :fs-read
+            :expansion $ :: 'Expr 'String
+            :required $ [] 'Syntax
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote (ns app.resource)
+        :code $ quote $ ns app.resource
     'app.schema $ %{} 'FileEntry
-      :defs $ {}
-        'store $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            def store $ {}
-              :states $ {}
-                :cursor $ []
+      :defs $ {} $ 'store
+        %{} 'CodeEntry (:doc |)
+          :code $ quote $ def store
+            {} $ :states $ {}
+              :cursor $ []
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote (ns app.schema)
+        :code $ quote $ ns app.schema
     'app.updater $ %{} 'FileEntry
-      :defs $ {}
-        'updater $ %{} 'CodeEntry (:doc |)
-          :code $ quote
-            defn updater (store op op-id op-time)
-              match op
-                (:states cursor s) (update-states store cursor s)
-                (:hydrate-storage data) data
-                _ $ do (eprintln "|Unknown op:" op) store
+      :defs $ {} $ 'updater
+        %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn updater (store op op-id op-time)
+            match op
+              (:states cursor s) (update-states store cursor s)
+              (:hydrate-storage data) data
+              _ $ do (eprintln "|Unknown op:" op) store
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic 'Dynamic 'String 'Number
       :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote
-          ns app.updater $ :require
-            respo.cursor :refer $ update-states
+        :code $ quote $ ns app.updater
+          :require $ respo.cursor :refer $ update-states
