@@ -3,8 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.main/main!) (:mode :native)
-      :reload-fn 'app.main/reload!
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :native) (:reload-fn 'app.main/reload!)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {}
@@ -124,9 +123,7 @@
             :args $ [] 'Dynamic
         'style-card-grid $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-grid
-            {} $ |& $ {} (:display :grid) (:gap |24px)
-              :grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))"
-              :margin "|24px 0 40px"
+            {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
           :examples $ []
           :schema $ :: 'Dynamic
         'style-card-title $ %{} 'CodeEntry (:doc |)
@@ -186,10 +183,7 @@
                 :display :flex
                 :flex-direction :column
                 :justify-content :center
-              |&:hover $ {}
-                :transform "|translateY(-4px)"
-                :box-shadow "|0 12px 24px rgba(0,0,0,0.08)"
-                :border-color brand-color
+              |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 12px 24px rgba(0,0,0,0.08)") (:border-color brand-color)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-main-container $ %{} 'CodeEntry (:doc |)
@@ -276,21 +270,9 @@
                 {} $ :style $ {} (:font-family ui/font-fancy) (:font-weight 300) (:font-size 20)
                 <> |Respo
               div ({})
-                a $ {}
-                  :href |https://github.com/Respo/respo-examples
-                  :target |_blank
-                  :class-name style-link
-                  :inner-text |Examples
-                a $ {}
-                  :href |https://github.com/Respo/respo.calcit/wiki/API
-                  :target |_blank
-                  :class-name style-link
-                  :inner-text |APIs
-                a $ {}
-                  :href |https://github.com/Respo
-                  :target |_blank
-                  :class-name style-link
-                  :inner-text |GitHub
+                a $ {} (:href |https://github.com/Respo/respo-examples) (:target |_blank) (:class-name style-link) (:inner-text |Examples)
+                a $ {} (:href |https://github.com/Respo/respo.calcit/wiki/API) (:target |_blank) (:class-name style-link) (:inner-text |APIs)
+                a $ {} (:href |https://github.com/Respo) (:target |_blank) (:class-name style-link) (:inner-text |GitHub)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-header $ %{} 'CodeEntry (:doc |)
@@ -357,15 +339,11 @@
                 {} (:class-name css/row)
                   :style $ {} $ :gap |8px
                 a
-                  {}
-                    :href |http://guide.respo-mvc.org/
-                    :target |_blank
+                  {} (:href |http://guide.respo-mvc.org/) (:target |_blank)
                   button $ {} (:inner-text |Guide)
                     :class-name $ str-spaced css/button-primary style-larger-button
                 a
-                  {}
-                    :href |https://respo-mvc.org/Agents.md
-                    :target |_blank
+                  {} (:href |https://respo-mvc.org/Agents.md) (:target |_blank)
                   button $ {} (:inner-text |Agents)
                     :class-name $ str-spaced css/button style-larger-button
                 span ({})
@@ -378,10 +356,8 @@
           :code $ quote $ defn render-feature (title desc)
             div
               {} $ :class-name style-feature-card
-              div $ {} (:inner-text title)
-                :class-name style-feature-title
-              div $ {} (:inner-text desc)
-                :class-name style-feature-desc
+              div $ {} (:inner-text title) (:class-name style-feature-title)
+              div $ {} (:inner-text desc) (:class-name style-feature-desc)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Dynamic)
             :args $ [] 'Dynamic 'Dynamic
@@ -401,9 +377,7 @@
         'style-R $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-R
             {}
-              |& $ {} (:color |#cd372d)
-                :transition-duration |400ms
-                :display :inline-block
+              |& $ {} (:color |#cd372d) (:transition-duration |400ms) (:display :inline-block)
               |div:hover>& $ {} $ :transform "|rotate(180deg) scale(1,-1)"
           :examples $ []
           :schema $ :: 'Dynamic
@@ -422,14 +396,10 @@
         'style-feature-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-card
             {}
-              |& $ {} (:padding |24px) (:background :white) (:border-radius |12px)
-                :box-shadow "|0 2px 8px rgba(0,0,0,0.05)"
+              |& $ {} (:padding |24px) (:background :white) (:border-radius |12px) (:box-shadow "|0 2px 8px rgba(0,0,0,0.05)")
                 :border $ str "|1px solid " $ hsl 0 0 96
                 :transition "|all 0.3s"
-              |&:hover $ {}
-                :transform "|translateY(-4px)"
-                :box-shadow "|0 8px 16px rgba(0,0,0,0.1)"
-                :border-color brand-color
+              |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.1)") (:border-color brand-color)
           :examples $ []
           :schema $ :: 'Dynamic
         'style-feature-desc $ %{} 'CodeEntry (:doc |)
@@ -477,19 +447,9 @@
         'style-larger-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-larger-button
             {}
-              |& $ {} (:border-radius |24px) (:line-height |40px) (:padding "|0 32px")
-                :transition-duration |200ms
-                :font-size 16
-                :font-weight 600
-                :box-shadow "|0 4px 12px rgba(0,0,0,0.15)"
-                :letter-spacing |0.5px
-                :border :none
-                :cursor :pointer
-              |&:hover $ {}
-                :transform "|translateY(-2px)"
-                :box-shadow "|0 8px 16px rgba(0,0,0,0.2)"
-              |&:active $ {} (:transform "|translateY(0)")
-                :box-shadow "|0 2px 6px rgba(0,0,0,0.1)"
+              |& $ {} (:border-radius |24px) (:line-height |40px) (:padding "|0 32px") (:transition-duration |200ms) (:font-size 16) (:font-weight 600) (:box-shadow "|0 4px 12px rgba(0,0,0,0.15)") (:letter-spacing |0.5px) (:border :none) (:cursor :pointer)
+              |&:hover $ {} (:transform "|translateY(-2px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.2)")
+              |&:active $ {} (:transform "|translateY(0)") (:box-shadow "|0 2px 6px rgba(0,0,0,0.1)")
           :examples $ []
           :schema $ :: 'Dynamic
         'style-link $ %{} 'CodeEntry (:doc |)
@@ -535,8 +495,7 @@
             cond
                 exists? js/window
                 , false
-              (exists? js/process)
-                = |true js/process.env.cdn
+              (exists? js/process) (= |true js/process.env.cdn)
               true false
           :examples $ []
           :schema $ :: 'Dynamic
@@ -546,13 +505,7 @@
           :schema $ :: 'Dynamic
         'site $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def site
-            {}
-              :dev-ui |http://localhost:8100/main-fonts.css
-              :release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css
-              :cdn-url |http://cdn.tiye.me/calcit-workflow/
-              :title |Calcit
-              :icon |http://cdn.tiye.me/logo/mvc-works.png
-              :storage-key |workflow
+            {} (:dev-ui |http://localhost:8100/main-fonts.css) (:release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css) (:cdn-url |http://cdn.tiye.me/calcit-workflow/) (:title |Calcit) (:icon |http://cdn.tiye.me/logo/mvc-works.png) (:storage-key |workflow)
           :examples $ []
           :schema $ :: 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
@@ -597,8 +550,7 @@
             :args $ []
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def mount-target
-            js/document.querySelector |.app
+          :code $ quote $ def mount-target (js/document.querySelector |.app)
           :examples $ []
           :schema $ :: 'Dynamic
         'persist-storage! $ %{} 'CodeEntry (:doc |)
@@ -624,10 +576,7 @@
             :args $ []
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! (renderer)
-            renderer
-              js/document.querySelector |.app
-              comp-container @*reel
-              , dispatch!
+            renderer (js/document.querySelector |.app) (comp-container @*reel) dispatch!
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Dynamic)
             :args $ [] 'Dynamic
