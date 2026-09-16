@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.14.16",
+    "@calcit/procs": "0.15.2",
     "cirru-color": "^0.2.4",
     "dayjs": "^1.11.13"
   },
