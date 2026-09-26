@@ -33,7 +33,9 @@
                         [] idx $ render-item item
                 comp-footer
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ [] 'Dynamic
+            :features $ #{} :js-ffi
         'comp-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-footer ()
             div
@@ -41,7 +43,9 @@
               comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
               render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ %none
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ []
+            :features $ #{} :js-ffi
         'hacky-wrap-code $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hacky-wrap-code (code)
             let
@@ -274,7 +278,9 @@
                 a $ {} (:href |https://github.com/Respo/respo.calcit/wiki/API) (:target |_blank) (:class-name style-link) (:inner-text |APIs)
                 a $ {} (:href |https://github.com/Respo) (:target |_blank) (:class-name style-link) (:inner-text |GitHub)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ []
+            :features $ #{} :js-ffi
         'style-header $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-header
             {} $ |& $ {} (:height 60) (:width |100%) (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "|0 16px")
@@ -318,7 +324,9 @@
               render-feature "|Hot Reloading" "|Instant feedback with reliable hot code swapping."
               render-feature |CSS-in-JS "|Scoped styles with defstyle macro."
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ []
+            :features $ #{} :js-ffi
         'comp-visual $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-visual ()
             div
@@ -351,7 +359,9 @@
                     :style $ {} $ :vertical-align :middle
                     :src |https://img.shields.io/github/v/release/Respo/respo.calcit
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ []
+            :features $ #{} :js-ffi
         'render-feature $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-feature (title desc)
             div
@@ -603,7 +613,9 @@
           :code $ quote $ def ssr?
             js-present? $ js/document.querySelector |meta.respo-ssr
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Dynamic)
+            :args $ []
+            :features $ #{} :js-ffi
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require
