@@ -3,7 +3,7 @@
   :about "|Machine-generated snapshot. Do not edit directly — changes will be overwritten. Use `calcit query` to inspect and `calcit edit`/`calcit tree` to modify. Run `calcit docs agents --contract` before mutations; use `--full` for first orientation or changed contract digest. Manual edits must follow format and schema conventions, then run `calcit edit format`."
   :package |app
   :entries $ {} $ :default
-    {} (:description |) (:init-fn 'app.main/main!) (:mode :native) (:reload-fn 'app.main/reload!)
+    {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/ |js-ffi/
       :type-slots $ {}
@@ -33,15 +33,17 @@
                         [] idx $ render-item item
                 comp-footer
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ [] $ :: 'Map 'Tag 'Dynamic
         'comp-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-footer ()
             div
               {} $ :class-name style-footer
-              comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](http://cljs.respo-mvc.org/)." $ {}
-              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ %none
+              comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](https://cljs.respo-mvc.org/)." $ {}
+              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ Option :none
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ []
         'hacky-wrap-code $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hacky-wrap-code (code)
             let
@@ -97,17 +99,17 @@
               (:snippet code)
                 comp-cirru-snippet
                   trim $ format-cirru $ hacky-wrap-code code
-                  %some $ %{} ui-schema/PresentationOptions
-                    :class-name $ %some $ str-spaced style-code-block style-syntax-theme
-                    :style $ %none
+                  Option :some $ %{} ui-schema/PresentationOptions
+                    :class-name $ Option :some $ str-spaced style-code-block style-syntax-theme
+                    :style $ Option :none
               (:tiny-snippet code)
                 div
                   {} $ :class-name style-tiny-snippet-container
                   comp-cirru-snippet
                     trim $ format-cirru $ hacky-wrap-code code
-                    %some $ %{} ui-schema/PresentationOptions
-                      :class-name $ %some style-syntax-theme
-                      :style $ %some $ {} (:border :none)
+                    Option :some $ %{} ui-schema/PresentationOptions
+                      :class-name $ Option :some style-syntax-theme
+                      :style $ Option :some $ {} (:border :none)
               (:link name url desc)
                 div
                   {} $ :class-name style-link-card
@@ -125,7 +127,7 @@
           :code $ quote $ defstyle style-card-grid
             {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-card-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-title
             {}
@@ -137,7 +139,7 @@
                 :transition "|color 0.2s"
               |&:hover $ {} $ :color brand-color
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-code-block $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-code-block
             {} $ |& $ {}
@@ -152,25 +154,25 @@
               :overflow :auto
               :margin-bottom 16
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-desc $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-desc
             {} $ |& $ {}
               :color $ hsl 0 0 40
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-footer
             {} $ |& $ {} (:max-width 1200) (:margin :auto) (:font-size 14) (:padding "|40px 20px") (:text-align :center)
               :color $ hsl 0 0 60
               :border-top $ str "|1px solid " $ hsl 0 0 96
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-hero-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero-container
             {} $ |& $ {} (:width |100%)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-link-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-link-card
             {}
@@ -185,7 +187,7 @@
                 :justify-content :center
               |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 12px 24px rgba(0,0,0,0.08)") (:border-color brand-color)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-main-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-main-container
             {}
@@ -193,12 +195,12 @@
               "|@media (max-width: 720px)" $ {} $ |&
                 {} $ :padding "|0 16px"
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-pair-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-container
             {} $ |& $ {} (:display :flex) (:flex-wrap :wrap) (:gap |32px) (:margin-bottom |64px) (:align-items :flex-start)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-pair-left $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-left
             {}
@@ -207,12 +209,12 @@
               "|& > div > div:first-child" $ {} (:font-weight 600) (:font-size 18)
                 :color $ hsl 0 0 20
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-pair-right $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-right
             {} $ |& $ {} (:flex 2) (:min-width |320px) (:overflow :hidden)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-syntax-theme $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-syntax-theme
             {}
@@ -224,7 +226,7 @@
                 :color $ hsl 210 80 55
                 :font-weight :bold
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-tiny-snippet-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-tiny-snippet-container
             {} $ |& $ {}
@@ -237,14 +239,14 @@
               :font-size 13
               :width :fit-content
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-title
             {} $ |& $ {} (:font-size 24) (:font-weight 600) (:margin "|48px 0 16px")
               :color $ hsl 0 0 20
               :font-family "|Josefin Sans, sans-serif"
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.container
           :require (respo-ui.core :as ui)
@@ -274,7 +276,8 @@
                 a $ {} (:href |https://github.com/Respo/respo.calcit/wiki/API) (:target |_blank) (:class-name style-link) (:inner-text |APIs)
                 a $ {} (:href |https://github.com/Respo) (:target |_blank) (:class-name style-link) (:inner-text |GitHub)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ []
         'style-header $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-header
             {} $ |& $ {} (:height 60) (:width |100%) (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "|0 16px")
@@ -285,7 +288,7 @@
               :top 0
               :z-index |999
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-link $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-link
             {}
@@ -298,7 +301,7 @@
                 :transition-duration |200ms
               |&:hover $ {} $ :color (hsl 200 80 60)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.header
           :require
@@ -318,7 +321,8 @@
               render-feature "|Hot Reloading" "|Instant feedback with reliable hot code swapping."
               render-feature |CSS-in-JS "|Scoped styles with defstyle macro."
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ []
         'comp-visual $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-visual ()
             div
@@ -339,7 +343,7 @@
                 {} (:class-name css/row)
                   :style $ {} $ :gap |8px
                 a
-                  {} (:href |http://guide.respo-mvc.org/) (:target |_blank)
+                  {} (:href |https://guide.respo-mvc.org/) (:target |_blank)
                   button $ {} (:inner-text |Guide)
                     :class-name $ str-spaced css/button-primary style-larger-button
                 a
@@ -351,7 +355,8 @@
                     :style $ {} $ :vertical-align :middle
                     :src |https://img.shields.io/github/v/release/Respo/respo.calcit
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ []
         'render-feature $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-feature (title desc)
             div
@@ -359,8 +364,8 @@
               div $ {} (:inner-text title) (:class-name style-feature-title)
               div $ {} (:inner-text desc) (:class-name style-feature-desc)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Element)
+            :args $ [] 'String 'String
         'render-link $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-link (text path target)
             div
@@ -372,27 +377,27 @@
                 button $ {} (:inner-text text)
                   :class-name $ str-spaced css/button style-ghost-button
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'String 'String $ :: 'Option 'String
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Element)
+            :args $ [] 'String 'String $ :: 'calcit.core/Option 'String
         'style-R $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-R
             {}
               |& $ {} (:color |#cd372d) (:transition-duration |400ms) (:display :inline-block)
               |div:hover>& $ {} $ :transform "|rotate(180deg) scale(1,-1)"
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-branch-name $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-branch-name
             {} $ |& $ {} (:font-size 48) (:font-family ui/font-fancy) (:line-height |1.2) (:font-weight 300)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-description $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-description
             {} $ |& $ {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
               :color $ hsl 0 0 33
               :font-family |Hind
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'Dynamic
         'style-feature-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-card
             {}
@@ -401,19 +406,19 @@
                 :transition "|all 0.3s"
               |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.1)") (:border-color brand-color)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-feature-desc $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-desc
             {} $ |& $ {} (:font-size 14) (:line-height |1.6)
               :color $ hsl 0 0 40
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-feature-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-title
             {} $ |& $ {} (:font-size 18) (:font-weight 600) (:margin-bottom |8px)
               :color $ hsl 0 0 20
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-ghost-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-ghost-button
             {}
@@ -430,12 +435,12 @@
               |&:hover $ {} (:border-color brand-color) (:color brand-color)
                 :background $ hsl 6 80 98
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-github $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-github
             {} $ :text-decoration :none
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'Dynamic
         'style-hero $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero
             {} $ |& $ {} (:padding "|80px 20px")
@@ -443,7 +448,7 @@
               :border-bottom $ str "|1px solid " $ hsl 0 0 94
               :margin-bottom |40px
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-larger-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-larger-button
             {}
@@ -451,12 +456,12 @@
               |&:hover $ {} (:transform "|translateY(-2px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.2)")
               |&:active $ {} (:transform "|translateY(0)") (:box-shadow "|0 2px 6px rgba(0,0,0,0.1)")
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-link $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-link
             {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'Dynamic
         'style-logo $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-logo
             {} $ |& $ {} (:width 160) (:height 160)
@@ -465,12 +470,12 @@
               :display :inline-block
               :vertical-align :middle
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'style-section $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-section
             {} (:display :inline-block) (:margin-right 12)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.home
           :require
@@ -489,25 +494,37 @@
         'brand-color $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def brand-color (hsl 6 80 50)
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'String
         'cdn? $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def cdn?
+          :code $ quote $ def cdn? (detect-cdn?)
+          :examples $ []
+          :schema $ :: 'Bool
+        'detect-cdn? $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn detect-cdn? ()
             cond
                 exists? js/window
                 , false
-              (exists? js/process) (= |true js/process.env.cdn)
+              (exists? js/process)
+                = |true $ unsafe-coerce js/process.env.cdn 'String
               true false
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'Bool)
+            :args $ []
+            :features $ #{} :js-ffi
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev? true
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Bool
         'site $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def site
-            {} (:dev-ui |http://localhost:8100/main-fonts.css) (:release-ui |http://cdn.tiye.me/favored-fonts/main-fonts.css) (:cdn-url |http://cdn.tiye.me/calcit-workflow/) (:title |Calcit) (:icon |http://cdn.tiye.me/logo/mvc-works.png) (:storage-key |workflow)
+            {} (:dev-ui |http://localhost:8100/main-fonts.css)
+              :release-ui |https://cdn.tiye.me/favored-fonts/main-fonts.css
+              :cdn-url |https://cos-sh.tiye.me/Respo/respo-mvc.org/
+              :title |Calcit
+              :icon |https://cdn.tiye.me/logo/mvc-works.png
+              :storage-key |workflow
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.config
           :require $ respo.util.format :refer $ hsl
@@ -517,7 +534,7 @@
           :code $ quote $ defatom *reel
             -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
           :examples $ []
-          :schema $ :: 'Ref 'Dynamic
+          :schema $ :: 'Ref $ :: 'Map 'Tag 'Dynamic
         'dispatch! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn dispatch! (op)
             when
@@ -550,15 +567,16 @@
             :args $ []
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def mount-target (js/document.querySelector |.app)
+          :code $ quote $ def mount-target
+            option:unwrap $ browser/query-selector |.app
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'js-ffi.browser/DomElementHost
         'persist-storage! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn persist-storage! ()
-            do
-              js/localStorage.setItem (:storage-key config/site)
-                format-cirru-edn $ :store @*reel
-              , &unit
+            js/localStorage.setItem
+              option:unwrap $ get config/site :storage-key
+              format-cirru-edn $ option:unwrap-or (get @*reel :store) schema/store
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
@@ -568,7 +586,7 @@
             if (nil? build-errors)
               do (remove-watch *reel :changes) (clear-cache!)
                 add-watch *reel :changes $ fn (reel prev) (render-app! render!)
-                reset! *reel $ refresh-reel @*reel schema/store updater
+                reset! *reel $ assert-type (refresh-reel @*reel schema/store updater) (:: 'Map 'Tag 'Dynamic)
                 hud! |ok~ |Ok
               hud! |error build-errors
           :examples $ []
@@ -583,11 +601,10 @@
             :features $ #{} :js-ffi
         'repeat! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn repeat! (duration cb)
-            do
-              js/setTimeout
-                fn () (cb) (repeat! duration cb)
-                * 1000 duration
-              , &unit
+            js/setTimeout
+              fn () (cb) (repeat! duration cb)
+              * 1000 duration
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Number $ :: 'Fn
@@ -601,9 +618,9 @@
             :args $ []
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
-            js-present? $ js/document.querySelector |meta.respo-ssr
+            option:some? $ browser/query-selector |meta.respo-ssr
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Bool
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require
@@ -617,6 +634,7 @@
             app.config :as config
             |./calcit.build-errors :default build-errors
             |bottom-tip :default hud!
+            js-ffi.browser :as browser
     'app.resource $ %{} 'FileEntry
       :defs $ {} $ 'inline
         %{} 'CodeEntry (:doc |)
@@ -626,6 +644,7 @@
           :schema $ :: 'Macro $ {}
             :capabilities $ #{} :fs-read
             :expansion $ :: 'Expr 'String
+            :features $ #{} :js-ffi
             :required $ [] 'Syntax
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.resource
@@ -636,7 +655,7 @@
             {} $ :states $ {}
               :cursor $ []
           :examples $ []
-          :schema $ :: 'Dynamic
+          :schema $ :: 'Map 'Tag 'Dynamic
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
     'app.updater $ %{} 'FileEntry
