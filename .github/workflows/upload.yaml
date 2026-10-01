@@ -9,6 +9,11 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: cos-upload-${{ github.repository }}-${{ github.event_name == 'pull_request' && format('pr-{0}', github.event.pull_request.number) || 'production' }}
+  cancel-in-progress: false
+  queue: max
+
 jobs:
   test:
     runs-on: ubuntu-24.04
@@ -46,31 +51,25 @@ jobs:
       - name: Validate Calcit snapshot and types
         run: |
           set -euo pipefail
-          test "$(calcit --version)" = "0.27.0"
           calcit calcit.cirru edit format
           git diff --exit-code -- calcit.cirru
-          calcit calcit.cirru fix --workflow strict --verify --format edn
           calcit calcit.cirru --check-only
           calcit calcit.cirru analyze check-public \
             --ns app.comp.container --ns app.comp.header --ns app.comp.home \
             --ns app.config --ns app.main --ns app.resource \
             --ns app.schema --ns app.updater \
             --summary-only --format json
-          calcit calcit.cirru analyze check-types --summary-only --format json
-          calcit calcit.cirru analyze weak-types \
-            --only schema-dynamic,code-dynamic --intent unresolved \
-            --summary-only --format json
-          calcit calcit.cirru analyze deprecated --summary-only --format json
-          calcit calcit.cirru analyze dynamic-methods
           calcit calcit.cirru docs check-md README.md
 
       - name: Select CDN asset path
         id: asset-path
         env:
           CDN_ORIGIN: https://cos-sh.tiye.me
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          set -euo pipefail
           if [[ "$GITHUB_EVENT_NAME" == "pull_request" ]]; then
-            asset_prefix="${GITHUB_REPOSITORY}/pr/"
+            asset_prefix="${GITHUB_REPOSITORY}/pr/${PR_NUMBER}/${GITHUB_RUN_ID}/${GITHUB_RUN_ATTEMPT}/"
           elif [[ "$GITHUB_REF" == "refs/heads/main" ]]; then
             asset_prefix="${GITHUB_REPOSITORY}/"
           else

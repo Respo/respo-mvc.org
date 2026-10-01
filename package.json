@@ -14,7 +14,7 @@
   "scripts": {
     "compile": "calcit calcit.cirru js",
     "build": "yarn compile && vite build && cp llms/Respo-Agent.md dist/Agents.md",
-    "dev": "vite",
+    "dev": "yarn compile && vite",
     "release": "yarn build"
   }
 }
