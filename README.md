@@ -26,9 +26,12 @@ https://github.com/calcit-lang/respo-calcit-workflow
 ### Development
 
 This project uses a single `calcit.cirru` source snapshot. Install and verify
-the current toolchain with:
+the current toolchain with (the first two commands require Rust/Cargo and
+install the independent tools once):
 
 ```bash
+cargo install calcit --version 0.27.0 --locked --bin calcit
+cargo install calcit-caps --version 0.1.1 --locked
 caps --ci
 corepack enable
 corepack prepare yarn@4.18.0 --activate
