@@ -1,6 +1,6 @@
-## Respo Home Page
+## Respo 官网
 
-> based on [calcit-js](https://calcit-lang.org/).
+使用 [Calcit](https://calcit-lang.org/) 与 Respo 构建的静态官网。
 
 Site https://respo-mvc.org .
 
@@ -23,30 +23,36 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
-### Development
+### 开发
 
-This project uses a single `calcit.cirru` source snapshot. Install and verify
-the current toolchain with (the first two commands require Rust/Cargo and
-install the independent tools once):
+源码仅维护 `calcit.cirru`，通过官方 query/tree/edit/config 修改。
+当前 CLI 与 `@calcit/procs` 配对使用 `0.30.1-alpha.5`；模块使用精确正式 tag。
+配对正式版可安装后，再同步升级并重新验收。
 
 ```bash
-cargo install calcit --version 0.27.0 --locked --bin calcit
-cargo install calcit-caps --version 0.1.1 --locked
-caps --ci
 corepack enable
 corepack prepare yarn@4.18.0 --activate
 yarn install --immutable
-caps verify --toolchain
+calcit calcit.cirru --check-only --all-defs
+calcit calcit.cirru fix --workflow strict --verify --format edn
+calcit calcit.cirru test --require-match
 yarn build
 yarn dev
 ```
 
-Use `calcit edit` or `calcit tree` for Calcit source changes; do not directly edit
-`calcit.cirru`. Read `calcit docs agents --contract` and live command help for the current CLI workflow. [Agents.md](./Agents.md) retains historical CLI examples.
+CI 使用 Caps 独立解析 Calcit 依赖；本地 Agent 使用已经准备好的依赖目录，不运行 Caps。
+`yarn build` 显式以 release 模式编译；`yarn dev` 保留开发模式，先编译一次再启动 Vite。
+需要源码监听时另运行 `calcit calcit.cirru js -w`。
+CLI 的 once/watch 行为和受保护编辑流程见 [Agents.md](./Agents.md)。
 
-项目保持正式 Calcit/procs 0.27.0，不新增 hash 依赖。原 Markdown 模块的 UI/js-ffi 版本冲突仍待兼容正式 release，不宣称严格 Caps 一致。`yarn dev` 先编译一次再启动 Vite；需要实时编译时另开终端运行 `calcit calcit.cirru js -w`，无需增加 concurrently。
+### 内容与部署
 
-CI 保留规范格式、严格入口、全部业务 namespace 公开定义、README 示例检查和真实构建，去掉重复迁移报告。COS 上传及公开访问校验只使用 action 内置 verify；PR 资源按 PR/run/attempt 隔离，同组串行上传最多保留100个等待任务。原生产前缀、服务器部署路径、共享资源及 Agents.md 构建复制步骤不变。
+`docs/content.cirru` 保存 25 个顶层内容项，使用具名递归 `ContentNode` 模型，加载时检查完整数据形状。
+代码片段通过公开 CirruQuote 转换格式化，不修改运行时内部对象。
+官网没有可编辑状态，不再读写模板的 `workflow` localStorage 存档；已有存档不会被删除。
+
+构建会将 `llms/Respo-Agent.md` 发布为 `/Agents.md`。PR 使用既有按编号、run 和 attempt 隔离的 CDN 前缀；
+生产 COS/rsync 路径与串行部署不变，上传结果由 COS action 的 `public-base-url` 内置校验检查。
 
 ### License
 
