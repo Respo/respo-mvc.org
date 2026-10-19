@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.27.0",
+    "@calcit/procs": "0.30.1-alpha.5",
     "cirru-color": "^0.2.4",
     "dayjs": "^1.11.13"
   },
@@ -13,7 +13,7 @@
   "packageManager": "yarn@4.18.0",
   "scripts": {
     "compile": "calcit calcit.cirru js",
-    "build": "yarn compile && vite build && cp llms/Respo-Agent.md dist/Agents.md",
+    "build": "mode=release yarn compile && vite build && cp llms/Respo-Agent.md dist/Agents.md",
     "dev": "yarn compile && vite",
     "release": "yarn build"
   }

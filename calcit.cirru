@@ -5,36 +5,27 @@
   :entries $ {} $ :default
     {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
-      :modules $ [] |respo.calcit/ |lilac/ |memof/ |respo-ui.calcit/ |respo-markdown.calcit/ |reel.calcit/ |js-ffi/
+      :modules $ [] |respo.calcit/ |respo-ui.calcit/ |respo-markdown.calcit/ |js-ffi/
       :type-slots $ {}
   :files $ {}
     'app.comp.container $ %{} 'FileEntry
       :defs $ {}
         'comp-container $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defcomp comp-container (reel)
-            let
-                store $ option:unwrap-or (get reel :store) ({})
-                states $ option:unwrap-or (get store :states) ({})
-                cursor $ option:unwrap-or (get states :cursor) ([])
-                state $ option:unwrap-or (get states :data)
-                  {} $ :content |
-                content-data $ parse-cirru-edn $ include-file! |./docs/content.cirru
+          :code $ quote $ defcomp comp-container ()
+            div
+              {} $ :class-name css/global
+              comp-header
+              comp-visual
               div
-                {} $ :class-name css/global
-                comp-header
-                comp-visual
-                div
-                  {} $ :class-name style-main-container
-                  comp-features
-                  list-> ({})
-                    ->
-                      assert-type content-data $ :: 'List 'Dynamic
-                      map-indexed $ fn (idx item)
-                        [] idx $ render-item item
-                comp-footer
+                {} $ :class-name style-main-container
+                comp-features
+                list-> ({})
+                  -> content-data $ map-indexed $ fn (idx item)
+                    [] idx $ render-item item
+              comp-footer
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ [] $ :: 'Map 'Tag 'Dynamic
+            :args $ []
         'comp-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-footer ()
             div
@@ -44,27 +35,38 @@
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
             :args $ []
-        'hacky-wrap-code $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn hacky-wrap-code (code)
-            let
-                v $ .-value code
-              set! (.-value code) (js-array v)
-              , code
+        'content-data $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ def content-data
+            parse-cirru-edn-as (include-file! |./docs/content.cirru) (:: 'List 'app.schema/ContentNode)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
+          :schema $ :: 'List 'app.schema/ContentNode
+          :tests $ [] $ %{} 'TestEntry (:name |all-site-sections)
+            :code $ quote $ assert= 25 (count content-data)
+            :tags $ #{} :unit
+        'format-snippet $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn format-snippet (code)
+            trim $ format-cirru $ [] (&cirru-quote:to-list code)
+          :examples $ []
+          :schema $ :: 'Fn $ {} (:return 'String)
+            :args $ [] 'CirruQuote
+          :tests $ [] $ %{} 'TestEntry (:name |does-not-mutate-syntax)
+            :code $ quote $ let
+                code $ parse-cirru-edn "|quote\n  div ({})\n    span ({})"
+                before $ format-cirru-edn code
+                first-render $ format-snippet code
+              assert= first-render $ format-snippet code
+              assert= before $ format-cirru-edn code
+            :tags $ #{} :unit
         'include-file! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro include-file! (path)
-            read-file $ unsafe-coerce path 'String
+            read-file $ decode-map-as path 'String
           :examples $ []
           :schema $ :: 'Macro $ {}
             :capabilities $ #{} :fs-read
             :expansion $ :: 'Expr 'String
-            :features $ #{} :js-ffi
             :required $ [] 'Syntax
         'render-item $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn render-item (item)
+          :code $ quote $ defcomp render-item (item)
             match item
               (:text t)
                 div
@@ -86,30 +88,23 @@
               (:cards xs)
                 list->
                   {} $ :class-name style-card-grid
-                  ->
-                    assert-type xs $ :: 'List 'Dynamic
-                    map-indexed $ fn (idx x)
-                      [] idx $ render-item x
+                  -> xs $ map-indexed $ fn (idx x)
+                    [] idx $ render-item x
               (:list xs)
                 list-> ({})
-                  ->
-                    assert-type xs $ :: 'List 'Dynamic
-                    map-indexed $ fn (idx x)
-                      [] idx $ render-item x
+                  -> xs $ map-indexed $ fn (idx x)
+                    [] idx $ render-item x
               (:snippet code)
-                comp-cirru-snippet
-                  trim $ format-cirru $ hacky-wrap-code code
-                  Option :some $ %{} ui-schema/PresentationOptions
-                    :class-name $ Option :some $ str-spaced style-code-block style-syntax-theme
-                    :style $ Option :none
+                comp-cirru-snippet (format-snippet code)
+                  Option :some $ ui-schema/PresentationOptions :class-name
+                    Option :some $ str-spaced style-code-block style-syntax-theme
+                    , :style $ Option :none
               (:tiny-snippet code)
                 div
                   {} $ :class-name style-tiny-snippet-container
-                  comp-cirru-snippet
-                    trim $ format-cirru $ hacky-wrap-code code
-                    Option :some $ %{} ui-schema/PresentationOptions
-                      :class-name $ Option :some style-syntax-theme
-                      :style $ Option :some $ {} (:border :none)
+                  comp-cirru-snippet (format-snippet code)
+                    Option :some $ ui-schema/PresentationOptions :class-name (Option :some style-syntax-theme) :style $ Option :some
+                      {} $ :border :none
               (:link name url desc)
                 div
                   {} $ :class-name style-link-card
@@ -117,12 +112,12 @@
                     div
                       {} $ :style $ {} (:margin-bottom 8)
                       a $ {} (:class-name style-card-title) (:href url) (:inner-text name) (:target |_blank)
-                    if (some? desc) (<> desc style-desc)
-              _ $ div ({})
-                <> $ to-lispy-string $ nth item 0
+                    match desc
+                      (:none) (<> |)
+                      (:some description) (<> description style-desc)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic
+          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
+            :args $ [] 'app.schema/ContentNode
         'style-card-grid $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-grid
             {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
@@ -255,13 +250,13 @@
             respo.util.format :refer $ hsl
             respo.core :refer $ defcomp defeffect <> >> div button textarea list-> span input a
             respo.comp.space :refer $ =<
-            reel.comp.reel :refer $ comp-reel
             respo-md.comp.md :refer $ comp-md comp-md-block
             app.comp.home :refer $ comp-visual render-link comp-features
             respo-ui.comp :refer $ comp-cirru-snippet
             app.config :refer $ dev? brand-color
             app.comp.header :refer $ comp-header
             respo-ui.schema :as ui-schema
+            app.schema :refer $ ContentNode
     'app.comp.header $ %{} 'FileEntry
       :defs $ {}
         'comp-header $ %{} 'CodeEntry (:doc |)
@@ -338,7 +333,7 @@
                 <> |espo style-branch-name
               div
                 {} $ :style style-description
-                <> "|Virtual DOM library on Calcit immutable data." nil
+                <> "|Virtual DOM library on Calcit immutable data."
               div
                 {} (:class-name css/row)
                   :style $ {} $ :gap |8px
@@ -393,7 +388,7 @@
           :schema $ :: 'String
         'style-description $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-description
-            {} $ |& $ {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
+            {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
               :color $ hsl 0 0 33
               :font-family |Hind
           :examples $ []
@@ -436,11 +431,6 @@
                 :background $ hsl 6 80 98
           :examples $ []
           :schema $ :: 'String
-        'style-github $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def style-github
-            {} $ :text-decoration :none
-          :examples $ []
-          :schema $ :: 'Map 'Tag 'Dynamic
         'style-hero $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero
             {} $ |& $ {} (:padding "|80px 20px")
@@ -457,11 +447,6 @@
               |&:active $ {} (:transform "|translateY(0)") (:box-shadow "|0 2px 6px rgba(0,0,0,0.1)")
           :examples $ []
           :schema $ :: 'String
-        'style-link $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def style-link
-            {} (:cursor :pointer) (:text-decoration :none) (:font-size 16)
-          :examples $ []
-          :schema $ :: 'Map 'Tag 'Dynamic
         'style-logo $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-logo
             {} $ |& $ {} (:width 160) (:height 160)
@@ -485,7 +470,6 @@
             respo.core :refer $ defcomp <> span div button a img pre code
             respo.comp.space :refer $ =<
             respo-md.comp.md :refer $ comp-md-block comp-md
-            app.resource :refer $ inline
             |cirru-color :as cirru-color
             respo.css :refer $ defstyle
             app.config :refer $ brand-color
@@ -495,24 +479,16 @@
           :code $ quote $ def brand-color (hsl 6 80 50)
           :examples $ []
           :schema $ :: 'String
-        'cdn? $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def cdn? (detect-cdn?)
+        'build-dev? $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defmacro build-dev? ()
+            = |dev $ option:unwrap-or (get-env |mode) |dev
           :examples $ []
-          :schema $ :: 'Bool
-        'detect-cdn? $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn detect-cdn? ()
-            cond
-                exists? js/window
-                , false
-              (exists? js/process)
-                = |true $ unsafe-coerce js/process.env.cdn 'String
-              true false
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Bool)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ :: 'Macro $ {}
+            :capabilities $ #{} :env-read
+            :expansion $ :: 'Expr 'Bool
+            :required $ []
         'dev? $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def dev? true
+          :code $ quote $ def dev? (build-dev?)
           :examples $ []
           :schema $ :: 'Bool
         'site $ %{} 'CodeEntry (:doc |)
@@ -530,92 +506,49 @@
           :require $ respo.util.format :refer $ hsl
     'app.main $ %{} 'FileEntry
       :defs $ {}
-        '*reel $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defatom *reel
-            -> reel-schema/reel (assoc :base schema/store) (assoc :store schema/store)
-          :examples $ []
-          :schema $ :: 'Ref $ :: 'Map 'Tag 'Dynamic
         'dispatch! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn dispatch! (op)
-            when
-              and config/dev? $ not=
-                option:unwrap-or (first op) :unknown
-                , :states
-              js/console.log |Dispatch: op
-            reset! *reel $ reel-updater updater @*reel op
+            when config/dev? $ eprintln "|Ignored static-page operation:" op
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
-            if config/dev? $ load-console-formatter!
-            if ssr? $ render-app! realize-ssr!
-            render-app! render!
-            add-watch *reel :changes $ fn (reel prev) (render-app! render!)
-            listen-devtools! |a dispatch!
-            js/window.addEventListener |beforeunload $ fn (event) (persist-storage!)
-            repeat! 60 persist-storage!
-            let
-                raw $ js/localStorage.getItem $ :storage-key config/site
-              when (js-present? raw)
-                dispatch! $ :: :hydrate-storage $ parse-cirru-edn (unsafe-coerce raw String)
+            when config/dev? $ load-console-formatter!
+            when ssr? $ realize-ssr! (mount-target) (comp-container) dispatch!
+            render-app!
             println "|App started."
+            , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ def mount-target
-            option:unwrap $ browser/query-selector |.app
+          :code $ quote $ defn mount-target ()
+            option:unwrap $ dom/query-selector |.app
           :examples $ []
-          :schema $ :: 'js-ffi.browser/DomElementHost
-        'persist-storage! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn persist-storage! ()
-            js/localStorage.setItem
-              option:unwrap $ get config/site :storage-key
-              format-cirru-edn $ option:unwrap-or (get @*reel :store) schema/store
-            , &unit
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
+          :schema $ :: 'Fn $ {} (:return 'respo.dom/DomElement)
             :args $ []
             :features $ #{} :js-ffi
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
-              do (remove-watch *reel :changes) (clear-cache!)
-                add-watch *reel :changes $ fn (reel prev) (render-app! render!)
-                reset! *reel $ assert-type (refresh-reel @*reel schema/store updater) (:: 'Map 'Tag 'Dynamic)
-                hud! |ok~ |Ok
+              do (clear-cache!) (render-app!) (hud! |ok~ |Ok)
               hud! |error build-errors
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-        'render-app! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn render-app! (renderer)
-            renderer (js/document.querySelector |.app) (comp-container @*reel) dispatch!
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic
-            :features $ #{} :js-ffi
-        'repeat! $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn repeat! (duration cb)
-            js/setTimeout
-              fn () (cb) (repeat! duration cb)
-              * 1000 duration
             , &unit
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Number $ :: 'Fn
-              {} (:return 'Unit)
-                :args $ []
+            :args $ []
             :features $ #{} :js-ffi
-        'snippets $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn snippets () (println config/cdn?)
+        'render-app! $ %{} 'CodeEntry (:doc |)
+          :code $ quote $ defn render-app! ()
+            render-with! (mount-target) comp-container dispatch!
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'Unit)
             :args $ []
+            :features $ #{} :js-ffi
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
             option:some? $ browser/query-selector |meta.respo-ssr
@@ -624,51 +557,33 @@
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require
-            respo.core :refer $ render! clear-cache! realize-ssr!
+            respo.core :refer $ render-with! clear-cache! realize-ssr!
             app.comp.container :refer $ comp-container
-            app.updater :refer $ updater
-            app.schema :as schema
-            reel.util :refer $ listen-devtools!
-            reel.core :refer $ reel-updater refresh-reel
-            reel.schema :as reel-schema
             app.config :as config
-            |./calcit.build-errors :default build-errors
+            |./calcit.build-errors.mjs :default build-errors
             |bottom-tip :default hud!
             js-ffi.browser :as browser
-    'app.resource $ %{} 'FileEntry
-      :defs $ {} $ 'inline
-        %{} 'CodeEntry (:doc |)
-          :code $ quote $ defmacro inline (path)
-            read-file $ unsafe-coerce path 'String
-          :examples $ []
-          :schema $ :: 'Macro $ {}
-            :capabilities $ #{} :fs-read
-            :expansion $ :: 'Expr 'String
-            :features $ #{} :js-ffi
-            :required $ [] 'Syntax
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.resource
+            respo.ffi.browser :as dom
     'app.schema $ %{} 'FileEntry
-      :defs $ {} $ 'store
+      :defs $ {} $ 'ContentNode
         %{} 'CodeEntry (:doc |)
-          :code $ quote $ def store
-            {} $ :states $ {}
-              :cursor $ []
+          :code $ quote $ defenum ContentNode (:text 'String) (:title 'String) (:pair 'app.schema/ContentNode 'app.schema/ContentNode)
+            :cards $ :: 'List 'app.schema/ContentNode
+            :list $ :: 'List 'app.schema/ContentNode
+            :snippet 'CirruQuote
+            :tiny-snippet 'CirruQuote
+            :link 'String 'String $ :: 'Option 'String
           :examples $ []
-          :schema $ :: 'Map 'Tag 'Dynamic
+          :schema $ :: 'EnumDef
+          :tests $ []
+            %{} 'TestEntry (:name |checked-content-model)
+              :code $ quote $ assert= (ContentNode :text |hello) (parse-cirru-edn-as "|%:: 'ContentNode 'text |hello" ContentNode)
+              :tags $ #{} :unit
+            %{} 'TestEntry (:name |reject-invalid-content)
+              :code $ quote $ match (try-parse-cirru-edn-as "|%:: 'ContentNode 'text 42" ContentNode)
+                (:err message)
+                  assert |bad-text-payload-rejected $ includes? message "|expected string"
+                (:ok _) (raise "|Invalid text payload was accepted")
+              :tags $ #{} :unit
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
-    'app.updater $ %{} 'FileEntry
-      :defs $ {} $ 'updater
-        %{} 'CodeEntry (:doc |)
-          :code $ quote $ defn updater (store op op-id op-time)
-            match op
-              (:states cursor s) (update-states store cursor s)
-              (:hydrate-storage data) data
-              _ $ do (eprintln "|Unknown op:" op) store
-          :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Dynamic)
-            :args $ [] 'Dynamic 'Dynamic 'String 'Number
-      :ns $ %{} 'NsEntry (:doc |)
-        :code $ quote $ ns app.updater
-          :require $ respo.cursor :refer $ update-states
