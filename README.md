@@ -23,11 +23,21 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
+### 使用者影响：正式 Calcit 0.30.1 配对
+
+CLI与 `@calcit/procs` 同步正式 **0.30.1**，配对已发布Markdown0.4.59、UI0.8.0、
+Respo0.16.124、JS-FFI0.2.5，传递Router0.8.37。请重新安装完整图、生成JS并刷新，
+不混用旧alpha缓存。UI升级可能有样式差异，不承诺逐像素相同。
+Snapshot与25个内容项本次不改动；闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为保留。
+不恢复Reel/localStorage模板逻辑，不删除用户旧workflow存档。
+CI使用strict Caps独立校验正式图，原all-defs/完整strict/定义测试/文档检查与COS内置verify保留，
+不新增校验脚本、测试、concurrently、预算或强转。本轮不合并/部署生产、不发布tag/npm。
+
 ### 开发
 
 源码仅维护 `calcit.cirru`，通过官方 query/tree/edit/config 修改。
-当前 CLI 与 `@calcit/procs` 配对使用 `0.30.1-alpha.5`；模块使用精确正式 tag。
-配对正式版可安装后，再同步升级并重新验收。
+当前CLI与 `@calcit/procs` 配对正式 `0.30.1`；模块使用上述精确正式tag。
+正式图的运行验收以本轮PR为准，之前alpha.5的源码迁移结果不当作新证明。
 
 ```bash
 corepack enable
