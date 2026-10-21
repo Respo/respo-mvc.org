@@ -28,7 +28,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 CLI与 `@calcit/procs` 同步正式 **0.30.1**，配对已发布Markdown0.4.59、UI0.8.0、
 Respo0.16.124、JS-FFI0.2.5，传递Router0.8.37。请重新安装完整图、生成JS并刷新，
 不混用旧alpha缓存。UI升级可能有样式差异，不承诺逐像素相同。
-Snapshot与25个内容项本次不改动；闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为保留。
+Snapshot与内容模型不变；25个内容项仅修正Respo.rs链接前多余的字面 `|`，不改闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为。
 不恢复Reel/localStorage模板逻辑，不删除用户旧workflow存档。
 CI使用strict Caps独立校验正式图，原all-defs/完整strict/定义测试/文档检查与COS内置verify保留，
 不新增校验脚本、测试、concurrently、预算或强转。本轮不合并/部署生产、不发布tag/npm。
