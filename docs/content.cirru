@@ -102,4 +102,4 @@
   %:: 'ContentNode 'text "|For Advanced developers, probably the best way to understand Respo is to [read code of how the author is using it](https://github.com/calcit-lang/respo-calcit-workflow/blob/main/calcit.cirru)."
   %:: 'ContentNode 'text "|[Find me on Twitter](https://twitter.com/tiyecirru). [Send feedbacks on issues](https://github.com/Respo/respo-mvc.org/) if you want to improve this page."
   %:: 'ContentNode 'title "|Respo in Rust"
-  %:: 'ContentNode 'text "|There's also |[Respo.rs](https://docs.rs/crate/respo/latest) which reimplemented Respo in Rust. It contains experiments running Respo in a language with builtin sum types, pattern matching, and traits(type class)."
+  %:: 'ContentNode 'text "|There's also [Respo.rs](https://docs.rs/crate/respo/latest) which reimplemented Respo in Rust. It contains experiments running Respo in a language with builtin sum types, pattern matching, and traits(type class)."
