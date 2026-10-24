@@ -41,7 +41,7 @@
           :examples $ []
           :schema $ :: 'List 'app.schema/ContentNode
           :tests $ [] $ %{} 'TestEntry (:name |all-site-sections)
-            :code $ quote $ assert= 25 (count content-data)
+            :code $ quote $ assert= 25 (.len content-data)
             :tags $ #{} :unit
         'format-snippet $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn format-snippet (code)
@@ -368,7 +368,7 @@
               a
                 {}
                   :href $ str path
-                  :target $ option:unwrap-or target |_self
+                  :target $ .unwrap-or target |_self
                 button $ {} (:inner-text text)
                   :class-name $ str-spaced css/button style-ghost-button
           :examples $ []
@@ -388,11 +388,11 @@
           :schema $ :: 'String
         'style-description $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-description
-            {} (:font-size 18) (:font-weight 400) (:line-height |1.6)
+            {} (:font-size |18px) (:font-weight |400) (:line-height |1.6)
               :color $ hsl 0 0 33
               :font-family |Hind
           :examples $ []
-          :schema $ :: 'Map 'Tag 'Dynamic
+          :schema $ :: 'Map 'Tag 'String
         'style-feature-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-card
             {}
@@ -434,7 +434,7 @@
         'style-hero $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero
             {} $ |& $ {} (:padding "|80px 20px")
-              :background $ str "|linear-gradient(180deg, " (hsl 0 0 98) "|\\\", \\\"\"" (hsl 0 0 100) "|\\\")\\\"\""
+              :background $ str "|linear-gradient(180deg, " (hsl 0 0 98) "|, " (hsl 0 0 100) "|)"
               :border-bottom $ str "|1px solid " $ hsl 0 0 94
               :margin-bottom |40px
           :examples $ []
@@ -458,9 +458,9 @@
           :schema $ :: 'String
         'style-section $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-section
-            {} (:display :inline-block) (:margin-right 12)
+            {} (:display |inline-block) (:margin-right |12px)
           :examples $ []
-          :schema $ :: 'Map 'Tag 'Dynamic
+          :schema $ :: 'Map 'Tag 'String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.home
           :require
@@ -481,7 +481,7 @@
           :schema $ :: 'String
         'build-dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro build-dev? ()
-            = |dev $ option:unwrap-or (get-env |mode) |dev
+            = |dev $ .unwrap-or (get-env |mode) |dev
           :examples $ []
           :schema $ :: 'Macro $ {}
             :capabilities $ #{} :env-read
@@ -527,7 +527,7 @@
             :features $ #{} :js-ffi
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn mount-target ()
-            option:unwrap $ dom/query-selector |.app
+            .unwrap $ dom/query-selector |.app
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'respo.dom/DomElement)
             :args $ []
@@ -551,7 +551,7 @@
             :features $ #{} :js-ffi
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
-            option:some? $ browser/query-selector |meta.respo-ssr
+            .some? $ browser/query-selector |meta.respo-ssr
           :examples $ []
           :schema $ :: 'Bool
       :ns $ %{} 'NsEntry (:doc |)
