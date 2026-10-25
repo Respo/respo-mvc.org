@@ -25,10 +25,14 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### 使用者影响：正式 Calcit 0.30.1 配对
 
-CLI与 `@calcit/procs` 同步正式 **0.30.1**，配对已发布Markdown0.4.59、UI0.8.0、
-Respo0.16.124、JS-FFI0.2.5，传递Router0.8.37。请重新安装完整图、生成JS并刷新，
+CLI与 `@calcit/procs` 保持正式 **0.30.1**，配对已发布Markdown0.4.60、UI0.8.1、
+Respo0.16.126、JS-FFI0.2.6，传递Router0.8.38；Vite固定8.3.3。请重新安装完整图、生成JS并刷新，
 不混用旧alpha缓存。UI升级可能有样式差异，不承诺逐像素相同。
-Snapshot与内容模型不变；25个内容项仅修正Respo.rs链接前多余的字面 `|`，不改闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为。
+迁移四处运行/构建期 Option 调用及原测试的一处 List 长度读取到方法写法，
+两个静态样式 Map 收紧为 `Map<Tag,String>`，CSS 值保留等价尺寸及字重。
+修正 Hero 渐变字符串多余的转义引号，使原本无效的背景成为预期的浅灰到白色渐变。
+25个内容项、闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为不变，
+保留热替换 `hud!` 成功/失败提示和原四项定义测试，不用 raise 替代 HUD。
 不恢复Reel/localStorage模板逻辑，不删除用户旧workflow存档。
 CI使用strict Caps独立校验正式图，原all-defs/完整strict/定义测试/文档检查与COS内置verify保留，
 不新增校验脚本、测试、concurrently、预算或强转。本轮不合并/部署生产、不发布tag/npm。
