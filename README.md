@@ -23,25 +23,23 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
-### 使用者影响：正式 Calcit 0.30.1 配对
+### 使用者影响：Calcit 0.31.0 配对
 
-CLI与 `@calcit/procs` 保持正式 **0.30.1**，配对已发布Markdown0.4.60、UI0.8.1、
-Respo0.16.126、JS-FFI0.2.6，传递Router0.8.38；Vite固定8.3.3。请重新安装完整图、生成JS并刷新，
-不混用旧alpha缓存。UI升级可能有样式差异，不承诺逐像素相同。
-迁移四处运行/构建期 Option 调用及原测试的一处 List 长度读取到方法写法，
-两个静态样式 Map 收紧为 `Map<Tag,String>`，CSS 值保留等价尺寸及字重。
-修正 Hero 渐变字符串多余的转义引号，使原本无效的背景成为预期的浅灰到白色渐变。
-25个内容项、闭合ContentNode解码、展示代码片段、静态导航及无可编辑状态的行为不变，
-保留热替换 `hud!` 成功/失败提示和原四项定义测试，不用 raise 替代 HUD。
-不恢复Reel/localStorage模板逻辑，不删除用户旧workflow存档。
-CI使用strict Caps独立校验正式图，原all-defs/完整strict/定义测试/文档检查与COS内置verify保留，
-不新增校验脚本、测试、concurrently、预算或强转。本轮不合并/部署生产、不发布tag/npm。
+CLI 与 `@calcit/procs` 配对正式 **0.31.0**，模块固定到已发布 Markdown 0.5.0-alpha.4、
+UI 0.9.0-alpha.4、Respo 0.17.0-alpha.4、JS-FFI 0.2.7，传递 Router 0.9.0-alpha.3。
+UI 图仍包含 alpha，可能有样式差异；升级时重新准备完整依赖、生成 JS 并完整刷新。
+
+此次补齐 Respo 的入口事件类型绑定，并将展示片段中已退役的 `watch!` 改为 `add-watch!`。
+25 个内容项、ContentNode 解码、其余展示代码片段、
+静态导航、Hero 渐变及热替换 `hud!` 提示保持；没有业务事件或可编辑状态，
+不恢复 Reel/localStorage 模板逻辑，不删除旧 workflow 存档。
+原四项测试、全定义/完整 strict、文档检查和 COS 内置 verify 保留，不新增脚本或放宽门禁。
 
 ### 开发
 
 源码仅维护 `calcit.cirru`，通过官方 query/tree/edit/config 修改。
-当前CLI与 `@calcit/procs` 配对正式 `0.30.1`；模块使用上述精确正式tag。
-正式图的运行验收以本轮PR为准，之前alpha.5的源码迁移结果不当作新证明。
+当前 CLI 与 `@calcit/procs` 配对正式 `0.31.0`；模块使用上述精确已发布 tag。
+依赖图的验收以当前提交为准，不将旧版本结果视为新版本通过。
 
 ```bash
 corepack enable
