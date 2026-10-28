@@ -75,7 +75,7 @@
         {} $ :states $ {}
           :cursor $ []
       %:: 'ContentNode 'snippet $ quote $ defn dispatch! (op) (swap! *store assoc :a 1)
-      %:: 'ContentNode 'snippet $ quote $ watch! *store :changes
+      %:: 'ContentNode 'snippet $ quote $ add-watch! *store :changes
         fn (current previous)
           render-with! mount-target
             fn () $ comp-container @*store

@@ -6,7 +6,7 @@
     {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |respo-ui.calcit/ |respo-markdown.calcit/ |js-ffi/
-      :type-slots $ {}
+      :type-slots $ {} $ :dispatch-op |app.schema/DispatchOp
   :files $ {}
     'app.comp.container $ %{} 'FileEntry
       :defs $ {}
@@ -565,8 +565,8 @@
             js-ffi.browser :as browser
             respo.ffi.browser :as dom
     'app.schema $ %{} 'FileEntry
-      :defs $ {} $ 'ContentNode
-        %{} 'CodeEntry (:doc |)
+      :defs $ {}
+        'ContentNode $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum ContentNode (:text 'String) (:title 'String) (:pair 'app.schema/ContentNode 'app.schema/ContentNode)
             :cards $ :: 'List 'app.schema/ContentNode
             :list $ :: 'List 'app.schema/ContentNode
@@ -585,5 +585,9 @@
                   assert |bad-text-payload-rejected $ includes? message "|expected string"
                 (:ok _) (raise "|Invalid text payload was accepted")
               :tags $ #{} :unit
+        'DispatchOp $ %{} 'CodeEntry (:doc "|静态官网的 Respo 事件入口合同；页面不发送业务事件，代表值不发送。")
+          :code $ quote $ def DispatchOp (:: :unhandled)
+          :examples $ []
+          :schema $ :: 'Enum
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
