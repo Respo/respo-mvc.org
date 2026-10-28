@@ -23,6 +23,20 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
+### 使用者影响：Calcit 0.32.0 迁移候选
+
+CLI/procs 配对正式 0.32.0，需要重新安装依赖、生成 JS 并刷新。
+Markdown 0.5.0、UI 0.9.0、Respo 0.17.0 当前使用本地候选，JS-FFI 为 0.2.8；
+正式标签整图尚待验收。本轮不合并部署，不改变生产与 PR 路径。
+
+官方转换 3 处旧类型写法，50 个定义 schema 保持。25 个内容项、ContentNode
+解码、代码展示、静态导航、Hero 渐变、HUD 和发布的 Agent 指南保持不变。
+不恢复可编辑状态或存档读写，不新增脚本、不放宽门禁；npm 年龄门禁为一小时。
+本轮完整 strict、全部定义、原四项测试、构建和 immutable 安装通过；README
+文档检查无 Cirru 代码块，不作为示例执行证据。发布的 Agents.md 与原指南字节一致。
+实际首页、代码展示、静态链接及刷新正常，浏览器无警告或错误，独立评审无问题。
+正式依赖整图和远端 CI 尚待验收。以下 0.31 配对说明为历史记录。
+
 ### 使用者影响：Calcit 0.31.0 配对
 
 CLI 与 `@calcit/procs` 配对正式 **0.31.0**，模块固定到已发布 Markdown 0.5.0-alpha.4、
