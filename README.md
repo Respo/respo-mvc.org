@@ -23,6 +23,16 @@ Previous implementation moved to [cljs.respo-mvc.org](https://github.com/Respo/c
 
 https://github.com/calcit-lang/respo-calcit-workflow
 
+### 使用者影响：Calcit 0.32.1
+
+CLI 与 `@calcit/procs` 配对正式 **0.32.1**，需要重新安装依赖、生成 JS 并完整刷新。使用已发布 Markdown **0.5.0**、UI **0.9.0**、Respo **0.17.1**、JS FFI **0.2.9**；UI 正式版所固定的传递 Router 仍为精确 **0.9.0-alpha.4**，不混入本地候选或 hash。上游 UI 升级不承诺逐像素相同。生产与 PR 路径不变，本轮不合并部署。
+
+官方 format 规范化三处旧类型表示；50 个应用定义的完整代码/schema/metadata/原测试与 main 经官方 format 归一后的查询视图相同。25 个内容项、ContentNode 解码、展示片段、静态导航、Hero 渐变、JS HUD 和发布的 Agent 指南保持；不恢复可编辑状态、存档读写或 devtools 通道。
+
+按仓库维护合同，本地仅使用已准备好的正式模块目录，CI 再通过 Caps 独立严格解析与校验标签。全定义、完整 strict（diagnostics=[]）、原四项测试、canonical dry-run、immutable 与构建通过；发布的 `dist/Agents.md` 与 `llms/Respo-Agent.md` 字节一致。README 没有 Cirru 代码块，不将文档检查冒称示例执行。隔离 IAB 首页、展示代码、静态导航目标和刷新正常，warning/error 为空；原 Linux CI 的本轮结果在迁移 PR 更新。IAB 客户端不能直接打开 `.md` URL，因此不宣称本地浏览器下载指南通过；指南文件以构建字节对照及原 COS 内置逐文件校验验证。
+
+按维护者确认的一小时策略，npm 新解析显式为 60m，无版本例外；当前 npm graph 无 Git 依赖，移除未使用的全局 Git 放行配置。没有新增脚本、测试框架或类型预算。历史 Git Snapshot 的旧类型暂不能由 program-diff 加载（[Calcit #2503](https://github.com/calcit-lang/calcit/issues/2503)）；对照使用隔离历史副本经官方 format 后的逐定义视图，不绕过原门禁。以下 0.31 配对说明仅为历史记录。
+
 ### 使用者影响：Calcit 0.31.0 配对
 
 CLI 与 `@calcit/procs` 配对正式 **0.31.0**，模块固定到已发布 Markdown 0.5.0-alpha.4、
@@ -38,7 +48,7 @@ UI 图仍包含 alpha，可能有样式差异；升级时重新准备完整依�
 ### 开发
 
 源码仅维护 `calcit.cirru`，通过官方 query/tree/edit/config 修改。
-当前 CLI 与 `@calcit/procs` 配对正式 `0.31.0`；模块使用上述精确已发布 tag。
+当前 CLI 与 `@calcit/procs` 配对正式 `0.32.1`；模块使用上述精确已发布 tag。
 依赖图的验收以当前提交为准，不将旧版本结果视为新版本通过。
 
 ```bash

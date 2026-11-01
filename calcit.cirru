@@ -24,8 +24,7 @@
                     [] idx $ render-item item
               comp-footer
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ []
+          :schema $ quote $ Fn (-> respo.schema/Component)
         'comp-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-footer ()
             div
@@ -33,13 +32,12 @@
               comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](https://cljs.respo-mvc.org/)." $ {}
               render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ Option :none
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ []
+          :schema $ quote $ Fn (-> respo.schema/Component)
         'content-data $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def content-data
             parse-cirru-edn-as (include-file! |./docs/content.cirru) (:: 'List 'app.schema/ContentNode)
           :examples $ []
-          :schema $ :: 'List 'app.schema/ContentNode
+          :schema $ quote $ List app.schema/ContentNode
           :tests $ [] $ %{} 'TestEntry (:name |all-site-sections)
             :code $ quote $ assert= 25 (.len content-data)
             :tags $ #{} :unit
@@ -47,8 +45,7 @@
           :code $ quote $ defn format-snippet (code)
             trim $ format-cirru $ [] (&cirru-quote:to-list code)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'String)
-            :args $ [] 'CirruQuote
+          :schema $ quote $ Fn CirruQuote (-> String)
           :tests $ [] $ %{} 'TestEntry (:name |does-not-mutate-syntax)
             :code $ quote $ let
                 code $ parse-cirru-edn "|quote\n  div ({})\n    span ({})"
@@ -61,10 +58,9 @@
           :code $ quote $ defmacro include-file! (path)
             read-file $ decode-map-as path 'String
           :examples $ []
-          :schema $ :: 'Macro $ {}
-            :capabilities $ #{} :fs-read
-            :expansion $ :: 'Expr 'String
-            :required $ [] 'Syntax
+          :schema $ quote $ Macro Syntax
+            -> $ Expr String
+            :capabilities :fs-read
         'render-item $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp render-item (item)
             match item
@@ -116,13 +112,12 @@
                       (:none) (<> |)
                       (:some description) (<> description style-desc)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ [] 'app.schema/ContentNode
+          :schema $ quote $ Fn app.schema/ContentNode (-> respo.schema/Component)
         'style-card-grid $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-grid
             {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-card-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-title
             {}
@@ -134,7 +129,7 @@
                 :transition "|color 0.2s"
               |&:hover $ {} $ :color brand-color
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-code-block $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-code-block
             {} $ |& $ {}
@@ -149,25 +144,25 @@
               :overflow :auto
               :margin-bottom 16
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-desc $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-desc
             {} $ |& $ {}
               :color $ hsl 0 0 40
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-footer
             {} $ |& $ {} (:max-width 1200) (:margin :auto) (:font-size 14) (:padding "|40px 20px") (:text-align :center)
               :color $ hsl 0 0 60
               :border-top $ str "|1px solid " $ hsl 0 0 96
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-hero-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero-container
             {} $ |& $ {} (:width |100%)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-link-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-link-card
             {}
@@ -182,7 +177,7 @@
                 :justify-content :center
               |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 12px 24px rgba(0,0,0,0.08)") (:border-color brand-color)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-main-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-main-container
             {}
@@ -190,12 +185,12 @@
               "|@media (max-width: 720px)" $ {} $ |&
                 {} $ :padding "|0 16px"
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-pair-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-container
             {} $ |& $ {} (:display :flex) (:flex-wrap :wrap) (:gap |32px) (:margin-bottom |64px) (:align-items :flex-start)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-pair-left $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-left
             {}
@@ -204,12 +199,12 @@
               "|& > div > div:first-child" $ {} (:font-weight 600) (:font-size 18)
                 :color $ hsl 0 0 20
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-pair-right $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-pair-right
             {} $ |& $ {} (:flex 2) (:min-width |320px) (:overflow :hidden)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-syntax-theme $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-syntax-theme
             {}
@@ -221,7 +216,7 @@
                 :color $ hsl 210 80 55
                 :font-weight :bold
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-tiny-snippet-container $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-tiny-snippet-container
             {} $ |& $ {}
@@ -234,14 +229,14 @@
               :font-size 13
               :width :fit-content
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-title
             {} $ |& $ {} (:font-size 24) (:font-weight 600) (:margin "|48px 0 16px")
               :color $ hsl 0 0 20
               :font-family "|Josefin Sans, sans-serif"
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.container
           :require (respo-ui.core :as ui)
@@ -271,8 +266,7 @@
                 a $ {} (:href |https://github.com/Respo/respo.calcit/wiki/API) (:target |_blank) (:class-name style-link) (:inner-text |APIs)
                 a $ {} (:href |https://github.com/Respo) (:target |_blank) (:class-name style-link) (:inner-text |GitHub)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ []
+          :schema $ quote $ Fn (-> respo.schema/Component)
         'style-header $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-header
             {} $ |& $ {} (:height 60) (:width |100%) (:display :flex) (:align-items :center) (:justify-content :space-between) (:padding "|0 16px")
@@ -283,7 +277,7 @@
               :top 0
               :z-index |999
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-link $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-link
             {}
@@ -296,7 +290,7 @@
                 :transition-duration |200ms
               |&:hover $ {} $ :color (hsl 200 80 60)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.header
           :require
@@ -316,8 +310,7 @@
               render-feature "|Hot Reloading" "|Instant feedback with reliable hot code swapping."
               render-feature |CSS-in-JS "|Scoped styles with defstyle macro."
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ []
+          :schema $ quote $ Fn (-> respo.schema/Component)
         'comp-visual $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-visual ()
             div
@@ -350,8 +343,7 @@
                     :style $ {} $ :vertical-align :middle
                     :src |https://img.shields.io/github/v/release/Respo/respo.calcit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Component)
-            :args $ []
+          :schema $ quote $ Fn (-> respo.schema/Component)
         'render-feature $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-feature (title desc)
             div
@@ -359,8 +351,7 @@
               div $ {} (:inner-text title) (:class-name style-feature-title)
               div $ {} (:inner-text desc) (:class-name style-feature-desc)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Element)
-            :args $ [] 'String 'String
+          :schema $ quote $ Fn String String (-> respo.schema/Element)
         'render-link $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-link (text path target)
             div
@@ -372,27 +363,26 @@
                 button $ {} (:inner-text text)
                   :class-name $ str-spaced css/button style-ghost-button
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.schema/Element)
-            :args $ [] 'String 'String $ :: 'calcit.core/Option 'String
+          :schema $ quote $ Fn String String (calcit.core/Option String) (-> respo.schema/Element)
         'style-R $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-R
             {}
               |& $ {} (:color |#cd372d) (:transition-duration |400ms) (:display :inline-block)
               |div:hover>& $ {} $ :transform "|rotate(180deg) scale(1,-1)"
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-branch-name $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-branch-name
             {} $ |& $ {} (:font-size 48) (:font-family ui/font-fancy) (:line-height |1.2) (:font-weight 300)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-description $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-description
             {} (:font-size |18px) (:font-weight |400) (:line-height |1.6)
               :color $ hsl 0 0 33
               :font-family |Hind
           :examples $ []
-          :schema $ :: 'Map 'Tag 'String
+          :schema $ quote $ Map Tag String
         'style-feature-card $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-card
             {}
@@ -401,19 +391,19 @@
                 :transition "|all 0.3s"
               |&:hover $ {} (:transform "|translateY(-4px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.1)") (:border-color brand-color)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-feature-desc $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-desc
             {} $ |& $ {} (:font-size 14) (:line-height |1.6)
               :color $ hsl 0 0 40
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-feature-title $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-feature-title
             {} $ |& $ {} (:font-size 18) (:font-weight 600) (:margin-bottom |8px)
               :color $ hsl 0 0 20
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-ghost-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-ghost-button
             {}
@@ -430,7 +420,7 @@
               |&:hover $ {} (:border-color brand-color) (:color brand-color)
                 :background $ hsl 6 80 98
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-hero $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-hero
             {} $ |& $ {} (:padding "|80px 20px")
@@ -438,7 +428,7 @@
               :border-bottom $ str "|1px solid " $ hsl 0 0 94
               :margin-bottom |40px
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-larger-button $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-larger-button
             {}
@@ -446,7 +436,7 @@
               |&:hover $ {} (:transform "|translateY(-2px)") (:box-shadow "|0 8px 16px rgba(0,0,0,0.2)")
               |&:active $ {} (:transform "|translateY(0)") (:box-shadow "|0 2px 6px rgba(0,0,0,0.1)")
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-logo $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-logo
             {} $ |& $ {} (:width 160) (:height 160)
@@ -455,12 +445,12 @@
               :display :inline-block
               :vertical-align :middle
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'style-section $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def style-section
             {} (:display |inline-block) (:margin-right |12px)
           :examples $ []
-          :schema $ :: 'Map 'Tag 'String
+          :schema $ quote $ Map Tag String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.comp.home
           :require
@@ -478,19 +468,18 @@
         'brand-color $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def brand-color (hsl 6 80 50)
           :examples $ []
-          :schema $ :: 'String
+          :schema $ quote String
         'build-dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defmacro build-dev? ()
             = |dev $ .unwrap-or (get-env |mode) |dev
           :examples $ []
-          :schema $ :: 'Macro $ {}
-            :capabilities $ #{} :env-read
-            :expansion $ :: 'Expr 'Bool
-            :required $ []
+          :schema $ quote $ Macro
+            -> $ Expr Bool
+            :capabilities :env-read
         'dev? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def dev? (build-dev?)
           :examples $ []
-          :schema $ :: 'Bool
+          :schema $ quote Bool
         'site $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def site
             {} (:dev-ui |http://localhost:8100/main-fonts.css)
@@ -500,7 +489,7 @@
               :icon |https://cdn.tiye.me/logo/mvc-works.png
               :storage-key |workflow
           :examples $ []
-          :schema $ :: 'Map 'Tag 'String
+          :schema $ quote $ Map Tag String
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.config
           :require $ respo.util.format :refer $ hsl
@@ -511,8 +500,7 @@
             when config/dev? $ eprintln "|Ignored static-page operation:" op
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'Dynamic
+          :schema $ quote $ Fn Dynamic (-> Unit)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -522,16 +510,12 @@
             println "|App started."
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn mount-target ()
             .unwrap $ dom/query-selector |.app
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'respo.dom/DomElement)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> respo.dom/DomElement) (:features :js-ffi)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! ()
             if (nil? build-errors)
@@ -539,21 +523,17 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
             render-with! (mount-target) comp-container dispatch!
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
             .some? $ browser/query-selector |meta.respo-ssr
           :examples $ []
-          :schema $ :: 'Bool
+          :schema $ quote Bool
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require
@@ -568,13 +548,13 @@
       :defs $ {}
         'ContentNode $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defenum ContentNode (:text 'String) (:title 'String) (:pair 'app.schema/ContentNode 'app.schema/ContentNode)
-            :cards $ :: 'List 'app.schema/ContentNode
-            :list $ :: 'List 'app.schema/ContentNode
+            :cards $ quote $ List app.schema/ContentNode
+            :list $ quote $ List app.schema/ContentNode
             :snippet 'CirruQuote
             :tiny-snippet 'CirruQuote
-            :link 'String 'String $ :: 'Option 'String
+            :link 'String 'String $ quote $ Option String
           :examples $ []
-          :schema $ :: 'EnumDef
+          :schema $ quote EnumDef
           :tests $ []
             %{} 'TestEntry (:name |checked-content-model)
               :code $ quote $ assert= (ContentNode :text |hello) (parse-cirru-edn-as "|%:: 'ContentNode 'text |hello" ContentNode)
@@ -588,6 +568,6 @@
         'DispatchOp $ %{} 'CodeEntry (:doc "|静态官网的 Respo 事件入口合同；页面不发送业务事件，代表值不发送。")
           :code $ quote $ def DispatchOp (:: :unhandled)
           :examples $ []
-          :schema $ :: 'Enum
+          :schema $ quote Enum
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
