@@ -35,7 +35,7 @@
           :schema $ quote $ Fn (-> respo.schema/Component)
         'content-data $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def content-data
-            parse-cirru-edn-as (include-file! |./docs/content.cirru) (:: 'List 'app.schema/ContentNode)
+            parse-cirru-edn-as (include-file! |./docs/content.cirru) (List app.schema/ContentNode)
           :examples $ []
           :schema $ quote $ List app.schema/ContentNode
           :tests $ [] $ %{} 'TestEntry (:name |all-site-sections)
@@ -500,7 +500,7 @@
             when config/dev? $ eprintln "|Ignored static-page operation:" op
             , &unit
           :examples $ []
-          :schema $ quote $ Fn Dynamic (-> Unit)
+          :schema $ quote $ Fn AnyEnum (-> Unit)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -547,12 +547,12 @@
     'app.schema $ %{} 'FileEntry
       :defs $ {}
         'ContentNode $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defenum ContentNode (:text 'String) (:title 'String) (:pair 'app.schema/ContentNode 'app.schema/ContentNode)
-            :cards $ quote $ List app.schema/ContentNode
-            :list $ quote $ List app.schema/ContentNode
-            :snippet 'CirruQuote
-            :tiny-snippet 'CirruQuote
-            :link 'String 'String $ quote $ Option String
+          :code $ quote $ defenum ContentNode (:text String) (:title String) (:pair app.schema/ContentNode app.schema/ContentNode)
+            :cards $ List app.schema/ContentNode
+            :list $ List app.schema/ContentNode
+            :snippet CirruQuote
+            :tiny-snippet CirruQuote
+            :link String String $ Option String
           :examples $ []
           :schema $ quote EnumDef
           :tests $ []
@@ -568,6 +568,6 @@
         'DispatchOp $ %{} 'CodeEntry (:doc "|静态官网的 Respo 事件入口合同；页面不发送业务事件，代表值不发送。")
           :code $ quote $ def DispatchOp (:: :unhandled)
           :examples $ []
-          :schema $ quote Enum
+          :schema $ quote AnyEnum
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
