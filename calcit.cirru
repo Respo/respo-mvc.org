@@ -6,7 +6,7 @@
     {} (:description |) (:init-fn 'app.main/main!) (:mode :js) (:reload-fn 'app.main/reload!) (:target :browser)
       :feature-policy $ {}
       :modules $ [] |respo.calcit/ |respo-ui.calcit/ |respo-markdown.calcit/ |js-ffi/
-      :type-slots $ {} $ :dispatch-op |app.schema/DispatchOp
+      :type-slots $ {} $ :dispatch-op 'app.schema/DispatchOp
   :files $ {}
     'app.comp.container $ %{} 'FileEntry
       :defs $ {}
@@ -500,7 +500,7 @@
             when config/dev? $ eprintln "|Ignored static-page operation:" op
             , &unit
           :examples $ []
-          :schema $ quote $ Fn AnyEnum (-> Unit)
+          :schema $ quote $ Fn app.schema/DispatchOp (-> Unit)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -566,8 +566,8 @@
                 (:ok _) (raise "|Invalid text payload was accepted")
               :tags $ #{} :unit
         'DispatchOp $ %{} 'CodeEntry (:doc "|静态官网的 Respo 事件入口合同；页面不发送业务事件，代表值不发送。")
-          :code $ quote $ def DispatchOp (:: :unhandled)
+          :code $ quote $ defenum DispatchOp (:unhandled)
           :examples $ []
-          :schema $ quote AnyEnum
+          :schema $ quote EnumDef
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.schema
