@@ -19,9 +19,10 @@
               div
                 {} $ :class-name style-main-container
                 comp-features
-                list-> ({})
-                  -> content-data $ map-indexed $ fn (idx item)
-                    [] idx $ render-item item
+                keyed-> ({})
+                  map-indexed content-data $ fn (idx item)
+                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    keyed-component idx $ render-item item
               comp-footer
           :examples $ []
           :schema $ quote $ Fn (-> respo.schema/Component)
@@ -82,14 +83,16 @@
                     {} $ :class-name style-pair-right
                     render-item r
               (:cards xs)
-                list->
+                keyed->
                   {} $ :class-name style-card-grid
-                  -> xs $ map-indexed $ fn (idx x)
-                    [] idx $ render-item x
+                  map-indexed xs $ fn (idx item)
+                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    keyed-component idx $ render-item item
               (:list xs)
-                list-> ({})
-                  -> xs $ map-indexed $ fn (idx x)
-                    [] idx $ render-item x
+                keyed-> ({})
+                  map-indexed xs $ fn (idx item)
+                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    keyed-component idx $ render-item item
               (:snippet code)
                 comp-cirru-snippet (format-snippet code)
                   Option :some $ ui-schema/PresentationOptions :class-name
@@ -243,7 +246,7 @@
             respo.css :refer $ defstyle
             respo-ui.css :as css
             respo.util.format :refer $ hsl
-            respo.core :refer $ defcomp defeffect <> >> div button textarea list-> span input a
+            respo.core :refer $ defcomp defeffect <> >> div button textarea keyed-> keyed-component span input a
             respo.comp.space :refer $ =<
             respo-md.comp.md :refer $ comp-md comp-md-block
             app.comp.home :refer $ comp-visual render-link comp-features
