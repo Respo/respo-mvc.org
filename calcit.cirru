@@ -31,14 +31,14 @@
             div
               {} $ :class-name style-footer
               comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](https://cljs.respo-mvc.org/)." $ {}
-              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community $ Option :none
+              render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community None
           :examples $ []
           :schema $ quote $ Fn (-> respo.schema/Component)
         'content-data $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def content-data
             parse-cirru-edn-as (include-file! |./docs/content.cirru) (List app.schema/ContentNode)
           :examples $ []
-          :schema $ quote $ List app.schema/ContentNode
+          :schema $ quote $ List ContentNode
           :tests $ [] $ %{} 'TestEntry (:name |all-site-sections)
             :code $ quote $ assert= 25 (.len content-data)
             :tags $ #{} :unit
@@ -95,14 +95,14 @@
                     keyed-component idx $ render-item item
               (:snippet code)
                 comp-cirru-snippet (format-snippet code)
-                  Option :some $ ui-schema/PresentationOptions :class-name
-                    Option :some $ str-spaced style-code-block style-syntax-theme
-                    , :style $ Option :none
+                  Some $ ui-schema/PresentationOptions :class-name
+                    Some $ str-spaced style-code-block style-syntax-theme
+                    , :style None
               (:tiny-snippet code)
                 div
                   {} $ :class-name style-tiny-snippet-container
                   comp-cirru-snippet (format-snippet code)
-                    Option :some $ ui-schema/PresentationOptions :class-name (Option :some style-syntax-theme) :style $ Option :some
+                    Some $ ui-schema/PresentationOptions :class-name (Some style-syntax-theme) :style $ Some
                       {} $ :border :none
               (:link name url desc)
                 div
@@ -115,7 +115,7 @@
                       (:none) (<> |)
                       (:some description) (<> description style-desc)
           :examples $ []
-          :schema $ quote $ Fn app.schema/ContentNode (-> respo.schema/Component)
+          :schema $ quote $ Fn ContentNode (-> respo.schema/Component)
         'style-card-grid $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-grid
             {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
@@ -366,7 +366,7 @@
                 button $ {} (:inner-text text)
                   :class-name $ str-spaced css/button style-ghost-button
           :examples $ []
-          :schema $ quote $ Fn String String (calcit.core/Option String) (-> respo.schema/Element)
+          :schema $ quote $ Fn String String (Option String) (-> respo.schema/Element)
         'style-R $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-R
             {}
