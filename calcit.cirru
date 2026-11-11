@@ -21,7 +21,7 @@
                 comp-features
                 keyed-> ({})
                   map-indexed content-data $ fn (idx item)
-                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    hint-fn $ Fn Number ContentNode $ -> respo.schema/ChildPair
                     keyed-component idx $ render-item item
               comp-footer
           :examples $ []
@@ -86,12 +86,12 @@
                 keyed->
                   {} $ :class-name style-card-grid
                   map-indexed xs $ fn (idx item)
-                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    hint-fn $ Fn Number ContentNode $ -> respo.schema/ChildPair
                     keyed-component idx $ render-item item
               (:list xs)
                 keyed-> ({})
                   map-indexed xs $ fn (idx item)
-                    hint-fn $ Fn Number app.schema/ContentNode $ -> respo.schema/ChildPair
+                    hint-fn $ Fn Number ContentNode $ -> respo.schema/ChildPair
                     keyed-component idx $ render-item item
               (:snippet code)
                 comp-cirru-snippet (format-snippet code)
