@@ -503,7 +503,7 @@
             when config/dev? $ eprintln "|Ignored static-page operation:" op
             , &unit
           :examples $ []
-          :schema $ quote $ Fn app.schema/DispatchOp (-> Unit)
+          :schema $ quote $ Fn app.schema/DispatchOp (-> Unit) (:features :io)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             println "|Running mode:" $ if config/dev? |dev |release
@@ -513,7 +513,7 @@
             println "|App started."
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn mount-target ()
             .unwrap $ dom/query-selector |.app
@@ -526,12 +526,12 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
             render-with! (mount-target) comp-container dispatch!
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
             .some? $ browser/query-selector |meta.respo-ssr
