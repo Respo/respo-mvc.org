@@ -25,7 +25,7 @@
                     keyed-component idx $ render-item item
               comp-footer
           :examples $ []
-          :schema $ quote $ Fn (-> respo.schema/Component)
+          :schema $ quote $ Fn (-> respo.schema/Component) (:features :state)
         'comp-footer $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defcomp comp-footer ()
             div
@@ -33,7 +33,7 @@
               comp-md-block "|Previously implemented in ClojureScript, check out [cljs.respo-mvc.org](https://cljs.respo-mvc.org/)." $ {}
               render-link |Community |https://github.com/Respo/respo.calcit/wiki/Community None
           :examples $ []
-          :schema $ quote $ Fn (-> respo.schema/Component)
+          :schema $ quote $ Fn (-> respo.schema/Component) (:features :state)
         'content-data $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def content-data
             parse-cirru-edn-as (include-file! |./docs/content.cirru) (List app.schema/ContentNode)
@@ -115,7 +115,7 @@
                       (:none) (<> |)
                       (:some description) (<> description style-desc)
           :examples $ []
-          :schema $ quote $ Fn ContentNode (-> respo.schema/Component)
+          :schema $ quote $ Fn ContentNode (-> respo.schema/Component) (:features :state)
         'style-card-grid $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstyle style-card-grid
             {} $ |& $ {} (:display :grid) (:gap |24px) (:grid-template-columns "|repeat(auto-fit, minmax(320px, 1fr))") (:margin "|24px 0 40px")
@@ -513,7 +513,7 @@
             println "|App started."
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'mount-target $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn mount-target ()
             .unwrap $ dom/query-selector |.app
@@ -526,12 +526,14 @@
               hud! |error build-errors
             , &unit
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'render-app! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn render-app! ()
-            render-with! (mount-target) comp-container dispatch!
+            render-with! (mount-target)
+              fn () $ comp-container
+              , dispatch!
           :examples $ []
-          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi)
+          :schema $ quote $ Fn (-> Unit) (:features :io :js-ffi :state)
         'ssr? $ %{} 'CodeEntry (:doc |)
           :code $ quote $ def ssr?
             .some? $ browser/query-selector |meta.respo-ssr
