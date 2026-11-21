@@ -25,7 +25,7 @@ https://github.com/calcit-lang/respo-calcit-workflow
 
 ### 使用者影响
 
-开发使用正式 Calcit 与 `@calcit/procs` **0.44.0**，配套 Markdown **0.9.2**、UI **0.15.4**、Respo **0.19.10** 与 JS FFI **0.2.18**。重新安装依赖并构建前端。静态页面、导航和代码片段沿用原内容，静态事件入口使用名义 `DispatchOp`，页面仍无业务派发。
+开发使用正式 Calcit 与 `@calcit/procs` **0.44.0**，配套 Markdown **0.9.5**、UI **0.15.7**、Respo **0.19.13** 与 JS FFI **0.2.19**。重新安装依赖并构建前端。静态页面、导航和代码片段沿用原内容，静态事件入口使用名义 `DispatchOp`，页面仍无业务派发。
 
 ### 0.32.1 迁移记录
 
